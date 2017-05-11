@@ -7,19 +7,15 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-
 public class Calendario {
         private DatePicker calendario;   //1)
         private GridPane gridPane;
         private Label dataSelezionata;
-        Calendario(){
-            calendario.setOnAction((e) -> {commitEdit(calendario.getValue());});
-            calendario = new DatePicker(LocalDate.now());
-            return calendario;
-        }
-        public GridPane creaCalendario(){
+public GridPane creaCalendario(){
             //VBox vbox = new VBox(20);
-         //   vbox.setStyle("-fx-padding: 10;");            
+         //   vbox.setStyle("-fx-padding: 10;"); 
+            calendario = new DatePicker(LocalDate.now());
+            calendario.setOnAction((e) -> {commitEdit(calendario.getValue());});
             gridPane = new GridPane();
             gridPane.setHgap(10);
             gridPane.setVgap(10);
@@ -32,7 +28,7 @@ public class Calendario {
         }
         
         private void commitEdit(LocalDate value) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+          System.out.println("dsfdsgfsd");
         }
 }
 
