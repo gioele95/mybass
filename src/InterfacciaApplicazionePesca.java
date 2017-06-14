@@ -24,7 +24,7 @@ public class InterfacciaApplicazionePesca extends Application {
     private Label currentBag;
     private Label bestBag;
     private Label titolo;
-    private VBox vboxCentrale;
+    private VBox vboxCentrale;      //1)
     private VBox vboxSinistra;
     private VBox vboxDestra;
     private BorderPane pane;
@@ -157,3 +157,4 @@ public class InterfacciaApplicazionePesca extends Application {
     }
     
 }
+//1)http://docs.oracle.com/javafx/2/layout/builtin_layouts.htm
