@@ -34,5 +34,5 @@ public GridPane creaCalendario(){
 
 /*
 1) https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/DatePicker.html,
-    https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/date-picker.html
+    https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/date-picker.htm
 */
