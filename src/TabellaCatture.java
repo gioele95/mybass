@@ -12,7 +12,7 @@ public class TabellaCatture extends TableView<DatiCattura>{
         private final TableColumn<DatiCattura,Double> colonnaPeso = new TableColumn("Peso kg");
         private final TableColumn<DatiCattura,String> colonnaTecnica = new TableColumn("Tecnica");
         private final TableColumn<DatiCattura,String> colonnaEsca = new TableColumn("Esca");
-        private ObservableList<Integer> tecnichePossibili;
+        private ObservableList<String> tecnichePossibili;
         public TabellaCatture() {
             //setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); //(1)
             colonnaCattura.setCellValueFactory(new PropertyValueFactory<>("cattura"));
@@ -20,5 +20,12 @@ public class TabellaCatture extends TableView<DatiCattura>{
             colonnaTecnica.setCellValueFactory(new PropertyValueFactory<>("Tecnica"));
             setEditable(true);
             getColumns().addAll(colonnaCattura,colonnaPeso,colonnaTecnica,colonnaEsca);
-           }
+        }
+        private void assegnaTecnichePossibili() {
+            tecnichePossibili = FXCollections.observableArrayList();
+            tecnichePossibili.add("Finesse");
+            tecnichePossibili.add("Reazione");
+            tecnichePossibili.add("Gomma");
+        }
+        
 }
