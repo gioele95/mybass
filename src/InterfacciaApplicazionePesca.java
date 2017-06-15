@@ -33,6 +33,8 @@ public class InterfacciaApplicazionePesca extends Application {
     private Text best;
     private Calendario calendario;
     private Label percentuale;
+    private GestoreMappa gestoreMappaLago;
+    private TabellaCatture tabella;
     @Override
     public void start(Stage stage) {
         bottoneConfermaDati = new Button("Conferma Dati");
@@ -43,7 +45,7 @@ public class InterfacciaApplicazionePesca extends Application {
         graficoTecnicheCatturanti= new GraficoTecnicheCatturanti();
         percentuale=new Label("");
         pane = new BorderPane();
-        
+        gestoreMappaLago=new GestoreMappa();
         vboxSinistra= VBoxSinistra();
         vboxDestra= VBoxDestra();
         vboxCentrale = VBoxCentrale();
@@ -81,23 +83,18 @@ public class InterfacciaApplicazionePesca extends Application {
         h3.getChildren().addAll(currentBag,current);
         vb.getChildren().addAll(calendario.creaCalendario());
         vb.getChildren().addAll(h1,h2,h3);
-        /* vb.setStyle("-fx-padding: 10;" + 
-                      "-fx-border-style: solid inside;" + 
-                      "-fx-border-width: 2;" +
-                      "-fx-border-insets: 5;" + 
-                      "-fx-border-radius: 5;" + 
-                      "-fx-border-color: blue;");/*/
         return vb;
     }
     private VBox VBoxCentrale(){
         VBox v = new VBox();
-        v.setPadding(new Insets(0, 100, 300, 100));
+        v.setPadding(new Insets(20, 100, 300, 150));
        
         titolo = new Label("MYBASS");
-
+        tabella = new TabellaCatture();
         titolo.setStyle("-fx-font-size: 30px;");
-        v.getChildren().addAll(titolo);
+        v.getChildren().addAll(titolo,tabella);
         v.setAlignment(Pos.TOP_CENTER);
+        v.setSpacing(100);
               /*/v.setStyle("-fx-padding: 10;" + 
                       "-fx-border-style: solid inside;" + 
                       "-fx-border-width: 2;" +
@@ -109,16 +106,10 @@ public class InterfacciaApplicazionePesca extends Application {
     private VBox VBoxDestra(){
         graficoTecnicheCatturanti=new GraficoTecnicheCatturanti();
         VBox vb=new VBox(20);
-        vb.setPadding(new Insets(100, 30, 30, 100));
-        vb.setPrefWidth(40);
-        vb.setPrefHeight(40);
-        vb.getChildren().addAll(graficoTecnicheCatturanti.grafico,percentuale);
-                /* vb.setStyle("-fx-padding: 10;" + 
-                      "-fx-border-style: solid inside;" + 
-                      "-fx-border-width: 2;" +
-                      "-fx-border-insets: 5;" + 
-                      "-fx-border-radius: 5;" + 
-                      "-fx-border-color: blue;");/*/
+        vb.setPadding(new Insets(10, 10, 30, 100));
+        vb.setPrefWidth(80);
+        vb.setPrefHeight(80);
+        vb.getChildren().addAll(gestoreMappaLago.mappaLago,graficoTecnicheCatturanti.grafico,percentuale);
         return vb;
     }
     private void clickMouseGrafico(){
@@ -158,3 +149,9 @@ public class InterfacciaApplicazionePesca extends Application {
     
 }
 //1)http://docs.oracle.com/javafx/2/layout/builtin_layouts.htm
+                /* vb.setStyle("-fx-padding: 10;" + 
+                      "-fx-border-style: solid inside;" + 
+                      "-fx-border-width: 2;" +
+                      "-fx-border-insets: 5;" + 
+                      "-fx-border-radius: 5;" + 
+                      "-fx-border-color: blue;");/*/
