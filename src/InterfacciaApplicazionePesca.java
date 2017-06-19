@@ -49,7 +49,6 @@ public class InterfacciaApplicazionePesca extends Application {
         vboxSinistra= VBoxSinistra();
         vboxDestra= VBoxDestra();
         vboxCentrale = VBoxCentrale();
-
         pane.setRight(vboxDestra);
         pane.setCenter(vboxCentrale);
         pane.setLeft(vboxSinistra);
@@ -95,12 +94,6 @@ public class InterfacciaApplicazionePesca extends Application {
         v.getChildren().addAll(titolo,tabella);
         v.setAlignment(Pos.TOP_CENTER);
         v.setSpacing(100);
-              /*/v.setStyle("-fx-padding: 10;" + 
-                      "-fx-border-style: solid inside;" + 
-                      "-fx-border-width: 2;" +
-                      "-fx-border-insets: 5;" + 
-                      "-fx-border-radius: 5;" + 
-                      "-fx-border-color: blue;");*/
         return v; 
     }
     private VBox VBoxDestra(){
@@ -109,14 +102,14 @@ public class InterfacciaApplicazionePesca extends Application {
         vb.setPadding(new Insets(10, 10, 30, 100));
         vb.setPrefWidth(80);
         vb.setPrefHeight(80);
-        vb.getChildren().addAll(gestoreMappaLago.mappaLago,graficoTecnicheCatturanti.grafico,percentuale);
+        vb.getChildren().addAll(gestoreMappaLago.pane,graficoTecnicheCatturanti.grafico);
+        for (int i=0; i < 5; i++)
+             vb.getChildren().addAll(gestoreMappaLago.cattura[i]);
         return vb;
     }
     private void clickMouseGrafico(){
-         
             percentuale.setTextFill(Color.BLACK);
             percentuale.setStyle("-fx-font: 12 arial;");
-
             for (final PieChart.Data data : graficoTecnicheCatturanti.grafico.getData()) {
                 data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
                 new EventHandler<MouseEvent>() {
@@ -124,25 +117,13 @@ public class InterfacciaApplicazionePesca extends Application {
                     public void handle(MouseEvent e) {
                         percentuale.setTranslateX(e.getSceneX());
                         percentuale.setTranslateY(e.getSceneY());
+                        System.out.println("x "+e.getSceneX()+ " y "+e.getSceneY());
                         percentuale.setText(String.valueOf(data.getPieValue()) + "%");
-
                     }
                 });
             }
     }
-    private void clickMouseCalendario(){
-         for (final PieChart.Data data : graficoTecnicheCatturanti.grafico.getData()) {
-                data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent e) {
-                        percentuale.setTranslateX(e.getSceneX());
-                        percentuale.setTranslateY(e.getSceneY());
-                        percentuale.setText(String.valueOf(data.getPieValue()) + "%");
-                    }
-                });
-        }
-    }
+
     public static void main(String[] args) {
         launch(args);
     }
