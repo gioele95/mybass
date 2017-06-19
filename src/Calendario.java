@@ -11,7 +11,7 @@ public class Calendario {
         private DatePicker calendario;   //1)
         private GridPane gridPane;
         private Label dataSelezionata;
-public GridPane creaCalendario(){
+        public GridPane creaCalendario(){
             //VBox vbox = new VBox(20);
          //   vbox.setStyle("-fx-padding: 10;"); 
             calendario = new DatePicker(LocalDate.now());
