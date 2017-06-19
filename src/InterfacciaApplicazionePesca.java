@@ -103,8 +103,6 @@ public class InterfacciaApplicazionePesca extends Application {
         vb.setPrefWidth(80);
         vb.setPrefHeight(80);
         vb.getChildren().addAll(gestoreMappaLago.pane,graficoTecnicheCatturanti.grafico);
-        for (int i=0; i < 5; i++)
-             vb.getChildren().addAll(gestoreMappaLago.cattura[i]);
         return vb;
     }
     private void clickMouseGrafico(){
