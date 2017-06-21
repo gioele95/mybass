@@ -1,25 +1,42 @@
 
+import java.sql.*;
+import javafx.beans.property.*;
 import javafx.collections.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.*;
-
+import javafx.scene.control.cell.TextFieldTableCell;
 /**
  *
  * @author Gioele
  */
 public class TabellaCatture extends TableView<DatiCattura>{    
-        private final TableColumn<DatiCattura,Integer> colonnaCattura = new TableColumn("Cattura");
+        private final TableColumn<DatiCattura,Integer> colonnaCattura = new TableColumn<>("Cattura");
         private final TableColumn<DatiCattura,Double> colonnaPeso = new TableColumn("Peso kg");
         private final TableColumn<DatiCattura,String> colonnaTecnica = new TableColumn("Tecnica");
         private final TableColumn<DatiCattura,String> colonnaEsca = new TableColumn("Esca");
+        private final TableColumn<DatiCattura,Integer> colonnaX = new TableColumn("CoordinataY");
+        private final TableColumn<DatiCattura,Integer> colonnaY = new TableColumn("CoordinataX");
+        private final TableColumn<DatiCattura,String> colonnaData = new TableColumn("Data");
         private ObservableList<String> tecnichePossibili;
+        private ObservableList<DatiCattura> listaCatture;
         public TabellaCatture() {
-            //setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); //(1)
-            colonnaCattura.setCellValueFactory(new PropertyValueFactory<>("cattura"));
+            setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); //(1)
+            assegnaTecnichePossibili();
+            colonnaCattura.setCellValueFactory(new PropertyValueFactory<>("Numero"));
             colonnaPeso.setCellValueFactory(new PropertyValueFactory<>("Peso"));
             colonnaTecnica.setCellValueFactory(new PropertyValueFactory<>("Tecnica"));
+            colonnaEsca.setCellValueFactory(new PropertyValueFactory<>("Esca"));
+            colonnaX.setCellValueFactory(new PropertyValueFactory<>("CoordinataY"));
+            colonnaY.setCellValueFactory(new PropertyValueFactory<>("CoordinataX"));
+            colonnaData.setCellValueFactory(new PropertyValueFactory<>("Data"));
+            
+            
+            colonnaTecnica.setCellFactory(ComboBoxTableCell.forTableColumn(tecnichePossibili));
             setEditable(true);
             getColumns().addAll(colonnaCattura,colonnaPeso,colonnaTecnica,colonnaEsca);
+            colonnaEsca.editableProperty();
+            caricaCatture();
+            setItems(listaCatture);
         }
         private void assegnaTecnichePossibili() {
             tecnichePossibili = FXCollections.observableArrayList();
@@ -27,5 +44,16 @@ public class TabellaCatture extends TableView<DatiCattura>{
             tecnichePossibili.add("Reazione");
             tecnichePossibili.add("Gomma");
         }
-        
+        private void caricaCatture() {
+            listaCatture = FXCollections.observableArrayList();
+            try ( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass", "root","");   //9
+                Statement st = co.createStatement(); 
+            ) { 
+                ResultSet rs = st.executeQuery("SELECT *  FROM tabellacatture"); 
+                while (rs.next()) 
+                  listaCatture.add(new DatiCattura( rs.getInt("cattura"),rs.getString("esca"), 
+                          rs.getString("data"),rs.getString("tecnica"),rs.getDouble("peso"),
+                          rs.getDouble("coordinataX"),rs.getDouble("coordinataY")));
+            } catch (SQLException e) {System.err.println(e.getMessage());}     
+        }
 }
