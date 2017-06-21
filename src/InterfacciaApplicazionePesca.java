@@ -37,6 +37,7 @@ public class InterfacciaApplicazionePesca extends Application {
     private TabellaCatture tabella;
     @Override
     public void start(Stage stage) {
+        tabella=new TabellaCatture();
         bottoneConfermaDati = new Button("Conferma Dati");
         bottoneSvuotaMappa = new Button("Svuota Mappa");
         personalBest= new Label("Personal Best");
