@@ -11,49 +11,49 @@ import javafx.beans.property.*;
 public class DatiCattura {
     int codiceCattura;
     //public Cattura cattura;
-    private SimpleIntegerProperty numero;
-    private SimpleDoubleProperty peso;
+    private SimpleStringProperty numero;
+    private SimpleStringProperty peso;
     private SimpleStringProperty tecnica;
     private SimpleStringProperty esca;
     private SimpleStringProperty data;
-    private SimpleDoubleProperty coordinataX;
-    private SimpleDoubleProperty coordinataY;
-    public DatiCattura(Integer n,String e,String d,String t,Double p,Double x,Double y) { //(1)
+    private SimpleStringProperty coordinataX;
+    private SimpleStringProperty coordinataY;
+    public DatiCattura(String n,String e,String d,String t,String p,String x,String y) { //(1)
         //cattura=new Cattura(n,p,t,e);
-        numero = new SimpleIntegerProperty(n); //
+        numero = new SimpleStringProperty(n); //
         esca = new SimpleStringProperty(e); //
         tecnica = new SimpleStringProperty(t);//
-        peso= new SimpleDoubleProperty(p);//
+        peso= new SimpleStringProperty(p);//
         data = new SimpleStringProperty(d.toString());//
-        coordinataX = new SimpleDoubleProperty(x);//
-        coordinataY = new SimpleDoubleProperty(y);//
+        coordinataX = new SimpleStringProperty(x);//
+        coordinataY = new SimpleStringProperty(y);//
         System.out.println("costr");
     }    
     public DatiCattura() {
-         this(-1,"","","",0.0,0.0,0.0);
+         this("","","","","","","");
     }
-    public Double getPeso(){
+    public String getPeso(){
         return peso.get();
     }
-    public void setPeso(Integer p){
+    public void setPeso(String p){
         peso.set(p);
     }
-    public Integer getNumero(){
+    public String getNumero(){
         return numero.get();
     }
-    public void setNumero(Integer n){
+    public void setNumero(String n){
         numero.set(n);
     }
-    public Double getCoordinataX(){
+    public String getCoordinataX(){
         return coordinataX.get();
     }
-    public void setCoordinataX(Double p){
+    public void setCoordinataX(String p){
         coordinataX.set(p);
     }
-     public Double getCoordinataY(){
+     public String getCoordinataY(){
         return coordinataY.get();
     }
-    public void setCoordinataY(Double p){
+    public void setCoordinataY(String p){
         coordinataY.set(p);
     }
     public String getTecnica(){
