@@ -10,12 +10,12 @@ import javafx.scene.control.cell.TextFieldTableCell;
  * @author Gioele
  */
 public class TabellaCatture extends TableView<DatiCattura>{    
-        private final TableColumn<DatiCattura,Integer> colonnaCattura = new TableColumn<>("Cattura");
-        private final TableColumn<DatiCattura,Double> colonnaPeso = new TableColumn("Peso kg");
+        private final TableColumn<DatiCattura,String> colonnaCattura = new TableColumn<>("Cattura");
+        private final TableColumn<DatiCattura,String> colonnaPeso = new TableColumn("Peso kg");
         private final TableColumn<DatiCattura,String> colonnaTecnica = new TableColumn("Tecnica");
         private final TableColumn<DatiCattura,String> colonnaEsca = new TableColumn("Esca");
-        private final TableColumn<DatiCattura,Integer> colonnaX = new TableColumn("CoordinataY");
-        private final TableColumn<DatiCattura,Integer> colonnaY = new TableColumn("CoordinataX");
+        private final TableColumn<DatiCattura,String> colonnaX = new TableColumn("CoordinataY");
+        private final TableColumn<DatiCattura,String> colonnaY = new TableColumn("CoordinataX");
         private final TableColumn<DatiCattura,String> colonnaData = new TableColumn("Data");
         private ObservableList<String> tecnichePossibili;
         private ObservableList<DatiCattura> listaCatture;
@@ -34,7 +34,8 @@ public class TabellaCatture extends TableView<DatiCattura>{
             colonnaTecnica.setCellFactory(ComboBoxTableCell.forTableColumn(tecnichePossibili));
             setEditable(true);
             getColumns().addAll(colonnaCattura,colonnaPeso,colonnaTecnica,colonnaEsca);
-            colonnaEsca.editableProperty();
+            colonnaEsca.setCellFactory(TextFieldTableCell.<DatiCattura>forTableColumn());
+            colonnaPeso.setCellFactory(TextFieldTableCell.<DatiCattura>forTableColumn());
             caricaCatture();
             setItems(listaCatture);
         }
@@ -51,9 +52,9 @@ public class TabellaCatture extends TableView<DatiCattura>{
             ) { 
                 ResultSet rs = st.executeQuery("SELECT *  FROM tabellacatture"); 
                 while (rs.next()) 
-                  listaCatture.add(new DatiCattura( rs.getInt("cattura"),rs.getString("esca"), 
-                          rs.getString("data"),rs.getString("tecnica"),rs.getDouble("peso"),
-                          rs.getDouble("coordinataX"),rs.getDouble("coordinataY")));
+                  listaCatture.add(new DatiCattura( rs.getString("cattura"),rs.getString("esca"), 
+                          rs.getString("data"),rs.getString("tecnica"),rs.getString("peso"),
+                          rs.getString("coordinataX"),rs.getString("coordinataY")));
             } catch (SQLException e) {System.err.println(e.getMessage());}     
         }
 }
