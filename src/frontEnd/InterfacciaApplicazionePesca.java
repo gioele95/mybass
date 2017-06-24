@@ -74,8 +74,8 @@ public class InterfacciaApplicazionePesca extends Application {
         personalBest = new Label("Personal Best[kg]");
         bestBag = new Label("Best Bag[kg]");
         currentBag = new Label("Current Bag[kg]");
-        best=new Text();
-        personal=new Text();
+        best=new Text("d");
+        personal=new Text("a");
         current=new Text("sdsd");
         vb.setAlignment(Pos.TOP_LEFT);
         HBox h1= new HBox(20);
@@ -105,11 +105,11 @@ public class InterfacciaApplicazionePesca extends Application {
     }
     private VBox VBoxDestra(){
         graficoTecnicheCatturanti=new GraficoTecnicheCatturanti();
-        VBox vb=new VBox(20);
-        vb.setPadding(new Insets(10, 10, 30, 100));
+        VBox vb=new VBox();
+        vb.setPadding(new Insets(10, 10, 10, 10));
         vb.setPrefWidth(80);
         vb.setPrefHeight(80);
-        vb.getChildren().addAll(gestoreMappaLago.pane,graficoTecnicheCatturanti.grafico);
+        vb.getChildren().addAll(gestoreMappaLago.vb,graficoTecnicheCatturanti.grafico);
         return vb;
     }
     private void clickMouseGrafico(){
