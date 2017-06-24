@@ -55,7 +55,7 @@ public class TabellaCatture extends TableView<DatiCattura>{
                 Statement st = co.createStatement(); 
             ) { 
                 System.out.println(d);
-                ResultSet rs = st.executeQuery("SELECT *  FROM tabellacatture WHERE data = "+d); 
+                ResultSet rs = st.executeQuery("SELECT *  FROM tabellacatture"/* WHERE data = "+d*/); 
                 while (rs.next()) 
                   listaCatture.add(new DatiCattura( rs.getString("cattura"),rs.getString("esca"), 
                           rs.getString("data"),rs.getString("tecnica"),rs.getString("peso"),
