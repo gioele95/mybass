@@ -1,16 +1,14 @@
 package frontEnd;
 
-import javafx.application.Application;
+import javafx.application.*;
 import javafx.event.*;
 import javafx.geometry.Insets;
 import javafx.geometry.*;
 import javafx.scene.*;
-import javafx.scene.chart.PieChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
-import javafx.scene.image.*;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 
@@ -29,10 +27,10 @@ public class InterfacciaApplicazionePesca extends Application {
     private VBox vboxCentrale;      //1)
     private VBox vboxSinistra;
     private VBox vboxDestra;
-    private BorderPane pane;
-    private Text personal;
+    private HBox hbox;
+/*    private Text personal;
     private Text current;
-    private Text best;
+    private Text best;*/
     private CalendarioPescate calendario;
     private GestoreMappa gestoreMappaLago;
     private TabellaCatture tabella;     
@@ -46,17 +44,16 @@ public class InterfacciaApplicazionePesca extends Application {
         currentBag= new Label("Current Bag");
         graficoTecnicheCatturanti= new GraficoTecnicheCatturanti();
         //percentuale=new Label("");
-        pane = new BorderPane();
+        hbox = new HBox();
         gestoreMappaLago=new GestoreMappa();
         vboxSinistra= VBoxSinistra();
         //tabella=new TabellaCatture(calendario.dataSelezionata.toString());
         vboxDestra= VBoxDestra();
         vboxCentrale = VBoxCentrale();
-        pane.setRight(vboxDestra);
-        pane.setCenter(vboxCentrale);
-        pane.setLeft(vboxSinistra);
-        Group root = new Group(pane);
-        Scene scene = new Scene(root);
+        hbox.getChildren().addAll(vboxSinistra,vboxCentrale,vboxDestra);
+        hbox.setSpacing(40);
+        Group root = new Group(hbox);
+        Scene scene = new Scene(root,1220,650); // x y
         ((Group) scene.getRoot()).getChildren().add(graficoTecnicheCatturanti.percentuale);
         for (int i=0;i<5;i++){
             ((Group) scene.getRoot()).getChildren().add(gestoreMappaLago.cattura[i]);
@@ -64,7 +61,10 @@ public class InterfacciaApplicazionePesca extends Application {
         clickMouseGrafico();
         clickMouseMappa();
         stage.setTitle("MyBass");
+        scene.getStylesheets().add("file:Styles/style.css");
         stage.setScene(scene);
+        
+        
         stage.show();
     }
     private VBox VBoxSinistra(){
@@ -74,9 +74,9 @@ public class InterfacciaApplicazionePesca extends Application {
         personalBest = new Label("Personal Best[kg]");
         bestBag = new Label("Best Bag[kg]");
         currentBag = new Label("Current Bag[kg]");
-        best=new Text("d");
+   /*     best=new Text("d");
         personal=new Text("a");
-        current=new Text("sdsd");
+        current=new Text("sdsd");*/
         vb.setAlignment(Pos.TOP_LEFT);
         HBox h1= new HBox(20);
         HBox h2= new HBox(20);
@@ -84,21 +84,28 @@ public class InterfacciaApplicazionePesca extends Application {
         h1.setPadding(new Insets(0, 30, 10, 30));
         h2.setPadding(new Insets(0, 10, 10, 30));
         h3.setPadding(new Insets(0, 10, 30, 30));
-        h1.getChildren().addAll(personalBest,personal);
-        h2.getChildren().addAll(bestBag,best);
-        h3.getChildren().addAll(currentBag,current);
+        
+        
         vb.getChildren().addAll(calendario.creaCalendario());
+        tabella = new TabellaCatture(calendario.dataSelezionata.toString());
+        System.out.println(calendario.dataSelezionata.toString());
+        h1.getChildren().addAll(personalBest,tabella.deposito.personal);
+        h2.getChildren().addAll(bestBag,tabella.deposito.best);
+        h3.getChildren().addAll(currentBag,tabella.deposito.current);
+
         vb.getChildren().addAll(h1,h2,h3);
         return vb;
     }
     private VBox VBoxCentrale(){
         VBox v = new VBox();
-        v.setPadding(new Insets(20, 100, 300, 150));
+        v.setPadding(new Insets(20, 100, 100, 50));
         titolo = new Label("MYBASS");
         System.out.println(calendario.dataSelezionata.toString());
-        tabella = new TabellaCatture(calendario.dataSelezionata.toString());
+
+        //tabella.setFixedCellSize(5);
         titolo.setStyle("-fx-font-size: 30px;");
         v.getChildren().addAll(titolo,tabella);
+    //   tabella.setMaxSize(700,176);
         v.setAlignment(Pos.TOP_CENTER);
         v.setSpacing(100);
         return v; 
@@ -127,7 +134,7 @@ public class InterfacciaApplicazionePesca extends Application {
         gestoreMappaLago.mappaLago.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
         @Override
             public void handle(MouseEvent e) {
-                gestoreMappaLago.clickMappa(e.getSceneX()-3,e.getSceneY()-10);
+                gestoreMappaLago.clickMappa((Integer)gestoreMappaLago.numeroSelezionato.getValue()-1,e.getSceneX()-3,e.getSceneY()-10);
             }
         });
     }

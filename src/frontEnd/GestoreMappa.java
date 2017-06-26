@@ -36,8 +36,10 @@ public class GestoreMappa {
               cattura[i-1].setVisible(false);
            }
            hbox();
-           vb.getChildren().addAll(mappaLago,hboxSelezione,cattura[0],cattura[1],cattura[2],cattura[3],cattura[4]/*,hboxSelezione/*,menu*/);
+           vb.getChildren().addAll(mappaLago,hboxSelezione,cattura[0],cattura[1],
+                   cattura[2],cattura[3],cattura[4]);
            vb.setSpacing(10);
+           hboxSelezione.setPadding(new Insets(10, 30, 10, 30));
     }
     private void hbox(){
         
@@ -52,11 +54,11 @@ public class GestoreMappa {
         hboxSelezione.setPadding(new Insets(10, 30, 10, 30));
         hboxSelezione.getChildren().addAll(selezioneCattura,numeroSelezionato);
     }
-    public void clickMappa(double x, double y){
-        Integer i=(Integer)numeroSelezionato.getValue()-1;
+    public void clickMappa(int i,double x, double y){
         System.out.println(i);
         cattura[i].setTranslateX(x);
         cattura[i].setTranslateY(y);
         cattura[i].setVisible(true);
     }
+
 }
