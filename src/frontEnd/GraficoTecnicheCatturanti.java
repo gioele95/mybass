@@ -24,7 +24,7 @@ public class GraficoTecnicheCatturanti {
             new PieChart.Data("Reazione",47),
             new PieChart.Data("Finesse",40));*/
             aggiornaGrafico();
-            grafico = new PieChart(datiGrafico);
+
             grafico.setTitle("Tecniche Catturanti");
             grafico.setLabelsVisible(true);
            
@@ -38,6 +38,7 @@ public class GraficoTecnicheCatturanti {
     }
     public void aggiornaGrafico(){
        datiGrafico = DepositoInformazioniCatture.getIstanza().percentuale();
+       grafico = new PieChart(datiGrafico);
     }
 }
 /*

@@ -42,23 +42,32 @@ public class DepositoInformazioniCatture {
     }
     public int inserisciCattura(DatiCattura dc) { 
         try( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass","root","");
-            PreparedStatement st = co.prepareStatement(queryInserimentoCattura);
+            PreparedStatement st = co.prepareStatement(queryInserimentoCattura,Statement.RETURN_GENERATED_KEYS);
+          
         ) {
+            System.out.println("inserisci cattura data"+dc.getData());
+              System.out.println("tecnica: "+dc.getTecnica());
+                System.out.println("esca "+dc.getEsca());
+                System.out.println("numero: "+dc.getNumero());
             st.setDate(1,Date.valueOf(dc.getData()));
             st.setInt(2, dc.getNumero());
-            st.setString(3,dc.getPeso());
+            if(dc.getPeso().equals(""))
+                st.setDouble(3,0.0);
+            else
+                st.setDouble(3,Double.parseDouble(dc.getPeso()));
             st.setString(4, dc.getTecnica());
             st.setString(5, dc.getEsca());
             st.setDouble(6,dc.getCoordinataX());
             st.setDouble(7,dc.getCoordinataY());
-            st.setInt(2, dc.getCodiceCattura());
             st.executeUpdate();
-
-            return 1;
-        } catch (SQLException ex) {
-            System.out.println("Errore di inserimento di una cattura ");
+            ResultSet rs=st.getGeneratedKeys();
+            if(rs.next())
+                return rs.getInt(1);
             return -1;
+        } catch (SQLException ex) {
+            System.out.println("Errore di inserimento di una cattura "+ex);
         }        
+        return -1;
     }
     /*"SELECT * FROM tabellacatture WHERE data="+d);//(*/
     public void caricaCatture(String d) {

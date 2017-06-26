@@ -87,8 +87,8 @@ public class InterfacciaApplicazionePesca extends Application {
         
         
         vb.getChildren().addAll(calendario.creaCalendario());
-        tabella = new TabellaCatture(calendario.dataSelezionata.toString());
-        System.out.println(calendario.dataSelezionata.toString());
+        tabella = new TabellaCatture(calendario.getData());
+        System.out.println(calendario.getData());
         h1.getChildren().addAll(personalBest,tabella.deposito.personal);
         h2.getChildren().addAll(bestBag,tabella.deposito.best);
         h3.getChildren().addAll(currentBag,tabella.deposito.current);
@@ -100,7 +100,7 @@ public class InterfacciaApplicazionePesca extends Application {
         VBox v = new VBox();
         v.setPadding(new Insets(20, 100, 100, 50));
         titolo = new Label("MYBASS");
-        System.out.println(calendario.dataSelezionata.toString());
+        System.out.println(calendario.getData());
 
         //tabella.setFixedCellSize(5);
         titolo.setStyle("-fx-font-size: 30px;");

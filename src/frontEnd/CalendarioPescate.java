@@ -14,7 +14,7 @@ public class CalendarioPescate {
         private DatePicker calendario;   //1)
         private GridPane gridPane;
         private Label titolo;
-        public LocalDate dataSelezionata;
+        private static LocalDate dataSelezionata;
         private TabellaCatture tabella;
         public GridPane creaCalendario(){
             calendario = new DatePicker(LocalDate.now());
@@ -31,6 +31,9 @@ public class CalendarioPescate {
         }
         public void assegnaTabella(TabellaCatture t){
             tabella=t;
+        }
+        public static String getData(){
+            return String.valueOf(dataSelezionata);
         }
         private void cambioData(LocalDate value) {
             if(calendario.getValue().isAfter(LocalDate.now())){

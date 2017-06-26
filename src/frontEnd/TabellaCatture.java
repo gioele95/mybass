@@ -59,22 +59,45 @@ public class TabellaCatture extends TableView<DatiCattura>{
         }
         public void inizializzaEventi(){
             colonnaEsca.setOnEditCommit((CellEditEvent<DatiCattura, String> t) -> {
-                DatiCattura d= t.getTableView().getItems().get(t.getTablePosition().getRow());
-                if(d.getCodiceCattura()!=-1)
-                    deposito.modificaCattura(d);
-                else 
-                    deposito.inserisciCattura(d);
+                modificaCelle(t,0);//1
             });
             colonnaTecnica.setOnEditCommit((CellEditEvent<DatiCattura, String> t) -> {
-            deposito.modificaCattura((DatiCattura) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())
-                        );
+                modificaCelle(t,1);
             });
             colonnaPeso.setOnEditCommit((CellEditEvent<DatiCattura, String> t) -> {
-            deposito.modificaCattura((DatiCattura) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())
-                        );
+                modificaCelle(t,2);
             });
         }
 
+        private void modificaCelle(CellEditEvent<DatiCattura, String> t,int sw){
+            DatiCattura d= t.getRowValue();
+            int i;
+            switch(sw){
+                case 0:
+                    d.setEsca(t.getNewValue());
+                    break;
+                case 1:
+                    d.setTecnica(t.getNewValue());
+                    break;
+                case 2:
+                    d.setPeso(t.getNewValue());
+                    break;   
+            }     
+            if(d.getCodiceCattura()!=-1)
+                deposito.modificaCattura(d);
+            else {
+                d.setData(CalendarioPescate.getData());
+                i=deposito.inserisciCattura(d);
+                if(sw==1){
+                    System.out.println("dopo la inserisci voglio aggiornare il grafico");
+                    GraficoTecnicheCatturanti graf=new GraficoTecnicheCatturanti();
+                }
+                    
+                if(i==-1)
+                    System.out.println("attenzione inserimento cattura fallito la inserisci ha ritornato-1");
+                else
+                    d.setCodiceCattura(i);
+            }
+        }
 }
+//1)    mando un int per sapere nel metodo modificaCelle quale sia il valore su cui fare d.set

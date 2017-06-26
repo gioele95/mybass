@@ -81,7 +81,7 @@ public class DatiCattura {
     public Integer getCodiceCattura(){
         return codiceCattura.get();
     }
-    public void setCodciceCattura(Integer n){
+    public void setCodiceCattura(Integer n){
         codiceCattura.set(n);
     }
 }
