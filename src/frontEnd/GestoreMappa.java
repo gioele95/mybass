@@ -1,5 +1,6 @@
 package frontEnd;
 
+import backEnd.DepositoInformazioniCatture;
 import static java.lang.Integer.parseInt;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javax.swing.JOptionPane;
+import middleWare.DatiCattura;
 
 /**
  *
@@ -54,11 +56,33 @@ public class GestoreMappa {
         hboxSelezione.setPadding(new Insets(10, 30, 10, 30));
         hboxSelezione.getChildren().addAll(selezioneCattura,numeroSelezionato);
     }
-    public void clickMappa(int i,double x, double y){
-        System.out.println(i);
-        cattura[i].setTranslateX(x);
-        cattura[i].setTranslateY(y);
-        cattura[i].setVisible(true);
+    public void clickMappa(int i,double x, double y,boolean caricamento,String d){
+        if(caricamento || DepositoInformazioniCatture.getIstanza().catturaEsistente(d,i+1)){
+            System.out.println(i);
+            cattura[i].setTranslateX(x);
+            cattura[i].setTranslateY(y);
+            cattura[i].setVisible(true);
+            if(!caricamento){
+                DepositoInformazioniCatture.getIstanza().impostaCoordinate(x,y,d,i+1);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Non puoi posizionare una  "
+                    + "cattura non esistente", "ATTENZIONE", JOptionPane.WARNING_MESSAGE);
+        }
+        
+    }
+    public void caricaPosizioni(String d){
+        System.out.println("caricaposizioni");
+        DatiCattura dc;
+        for(int i=0;i<5;i++){ 
+            ObservableList<DatiCattura> ol =DepositoInformazioniCatture.getIstanza().listaCatture;
+            if(ol.isEmpty()){
+                System.out.println("attenzione observable list vuota");
+                return;
+            }
+            dc=ol.get(i);
+            clickMappa(dc.getNumero()-1,dc.getCoordinataX(),dc.getCoordinataY(),true,d);
+        }
     }
 
 }

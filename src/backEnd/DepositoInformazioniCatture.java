@@ -20,6 +20,8 @@ public class DepositoInformazioniCatture {
     private final String queryBestBag= "SELECT max(bag) as bestbag FROM bagpergiorno";
     private final String queryCurrentBag= "SELECT bag FROM bagpergiorno WHERE data=?";
     private final String queryPercentuale= "SELECT * FROM percentuali";
+    private final String queryCoordinate=" UPDATE tabellacatture SET coordinataX=?,coordinataY=? WHERE data=? and cattura=?";
+    private final String queryCatturaEsiste="SELECT codicecattura FROM tabellacatture WHERE data=? and cattura=? ";
     public Text personal;
     public Text current;
     public Text best;
@@ -27,6 +29,24 @@ public class DepositoInformazioniCatture {
     
     private static DepositoInformazioniCatture istanza;
     
+    public boolean catturaEsistente(String d,int c){
+        System.out.println("cattura esistente");
+        try( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass", "root","");//,"");
+            PreparedStatement st = co.prepareStatement(queryCatturaEsiste);
+        ) {
+            st.setString(1, d);
+            st.setInt(2, c);
+            
+            ResultSet rs = st.executeQuery();
+            if(rs.next())
+                return true;
+            return false;
+        } catch (SQLException ex) {
+            
+            System.out.println("Errore di inserimento di una cattura "+ex);
+        }      
+        return false;
+    }
     
     public DepositoInformazioniCatture(){
         listaCatture= FXCollections.observableArrayList();
@@ -136,6 +156,22 @@ public class DepositoInformazioniCatture {
             
             System.out.println("Errore di inserimento di una cattura "+ex);
             return -1;
+        }        
+    }
+     public void impostaCoordinate(double x, double y,String d,int c){
+        System.out.println("imposta coordinate");
+        try( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass", "root","");//,"");
+            PreparedStatement st = co.prepareStatement(queryCoordinate);
+        ) {
+            st.setDouble(1,x);
+            st.setDouble(2,y);
+            st.setString(3, d);
+            st.setInt(4, c);
+            
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            
+            System.out.println("Errore di inserimento di una cattura "+ex);
         }        
     }
     public ObservableList<PieChart.Data> percentuale(){

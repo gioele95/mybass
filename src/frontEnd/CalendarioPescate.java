@@ -16,7 +16,9 @@ public class CalendarioPescate {
         private Label titolo;
         private static LocalDate dataSelezionata;
         private TabellaCatture tabella;
-        public GridPane creaCalendario(){
+        private GestoreMappa gestore;
+        public GridPane creaCalendario(GestoreMappa g){
+            gestore=g;
             calendario = new DatePicker(LocalDate.now());
             dataSelezionata=LocalDate.now();
             calendario.setOnAction((e) -> {cambioData(calendario.getValue());});
@@ -38,12 +40,15 @@ public class CalendarioPescate {
         private void cambioData(LocalDate value) {
             if(calendario.getValue().isAfter(LocalDate.now())){
                 System.out.println("dsadsa");
-                JOptionPane.showMessageDialog(null, "Non puoi selezionare una data futura", "ATTENZIONE", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Non puoi selezionare una "
+                    + "data futura", "ATTENZIONE", JOptionPane.WARNING_MESSAGE);
                 calendario.setValue(dataSelezionata);
                 return;
             }
             dataSelezionata= calendario.getValue();
-            DepositoInformazioniCatture.getIstanza().caricaCatture(String.valueOf(dataSelezionata));
+            DepositoInformazioniCatture.getIstanza().caricaCatture
+                                    (String.valueOf(dataSelezionata));
+            gestore.caricaPosizioni(String.valueOf(dataSelezionata));
         }
 }
 

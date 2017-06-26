@@ -2,17 +2,11 @@ package frontEnd;
 
 import middleWare.*;
 import backEnd.DepositoInformazioniCatture;
-import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import javafx.beans.property.*;
 import javafx.collections.*;
-import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.*;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.converter.DoubleStringConverter;
 /**
  *
  * @author Gioele
@@ -83,16 +77,20 @@ public class TabellaCatture extends TableView<DatiCattura>{
                     d.setPeso(t.getNewValue());
                     break;   
             }     
-            if(d.getCodiceCattura()!=-1)
+            if(d.getCodiceCattura()!=-1){
                 deposito.modificaCattura(d);
+                if(sw==1){
+                    System.out.println("dopo la inserisci voglio aggiornare il grafico");
+                    GraficoTecnicheCatturanti.aggiornaGrafico();
+                } 
+            }
             else {
                 d.setData(CalendarioPescate.getData());
                 i=deposito.inserisciCattura(d);
                 if(sw==1){
                     System.out.println("dopo la inserisci voglio aggiornare il grafico");
-                    GraficoTecnicheCatturanti graf=new GraficoTecnicheCatturanti();
-                }
-                    
+                    GraficoTecnicheCatturanti.aggiornaGrafico();
+                }  
                 if(i==-1)
                     System.out.println("attenzione inserimento cattura fallito la inserisci ha ritornato-1");
                 else

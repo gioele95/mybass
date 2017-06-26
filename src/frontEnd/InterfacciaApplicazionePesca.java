@@ -11,9 +11,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
-
 /**
- *
  * @author Gioele
  */
 public class InterfacciaApplicazionePesca extends Application {
@@ -54,11 +52,12 @@ public class InterfacciaApplicazionePesca extends Application {
         hbox.setSpacing(40);
         Group root = new Group(hbox);
         Scene scene = new Scene(root,1220,650); // x y
-        ((Group) scene.getRoot()).getChildren().add(graficoTecnicheCatturanti.percentuale);
+  //      ((Group) scene.getRoot()).getChildren().add(graficoTecnicheCatturanti.getPercentuale());
+
         for (int i=0;i<5;i++){
             ((Group) scene.getRoot()).getChildren().add(gestoreMappaLago.cattura[i]);
         }
-        clickMouseGrafico();
+  //      clickMouseGrafico();
         clickMouseMappa();
         stage.setTitle("MyBass");
         scene.getStylesheets().add("file:Styles/style.css");
@@ -86,7 +85,7 @@ public class InterfacciaApplicazionePesca extends Application {
         h3.setPadding(new Insets(0, 10, 30, 30));
         
         
-        vb.getChildren().addAll(calendario.creaCalendario());
+        vb.getChildren().addAll(calendario.creaCalendario(gestoreMappaLago));
         tabella = new TabellaCatture(calendario.getData());
         System.out.println(calendario.getData());
         h1.getChildren().addAll(personalBest,tabella.deposito.personal);
@@ -108,6 +107,7 @@ public class InterfacciaApplicazionePesca extends Application {
     //   tabella.setMaxSize(700,176);
         v.setAlignment(Pos.TOP_CENTER);
         v.setSpacing(100);
+        gestoreMappaLago.caricaPosizioni(calendario.getData());
         return v; 
     }
     private VBox VBoxDestra(){
@@ -116,11 +116,11 @@ public class InterfacciaApplicazionePesca extends Application {
         vb.setPadding(new Insets(10, 10, 10, 10));
         vb.setPrefWidth(80);
         vb.setPrefHeight(80);
-        vb.getChildren().addAll(gestoreMappaLago.vb,graficoTecnicheCatturanti.grafico);
+        vb.getChildren().addAll(gestoreMappaLago.vb,GraficoTecnicheCatturanti.getGrafico());
         return vb;
     }
-    private void clickMouseGrafico(){
-            for (final PieChart.Data data : graficoTecnicheCatturanti.grafico.getData()) {
+   /* private void clickMouseGrafico(){
+            for (final PieChart.Data data : GraficoTecnicheCatturanti.getGrafico().getData()) {
                 data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
                 new EventHandler<MouseEvent>() {
                     @Override
@@ -129,12 +129,12 @@ public class InterfacciaApplicazionePesca extends Application {
                     }
                 });
             }
-    }
+    }*/
     private void clickMouseMappa(){
         gestoreMappaLago.mappaLago.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
         @Override
             public void handle(MouseEvent e) {
-                gestoreMappaLago.clickMappa((Integer)gestoreMappaLago.numeroSelezionato.getValue()-1,e.getSceneX()-3,e.getSceneY()-10);
+                gestoreMappaLago.clickMappa((Integer)gestoreMappaLago.numeroSelezionato.getValue()-1,e.getSceneX()-3,e.getSceneY()-10,false,calendario.getData());
             }
         });
     }
