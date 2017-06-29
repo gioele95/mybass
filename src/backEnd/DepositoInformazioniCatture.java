@@ -22,6 +22,7 @@ public class DepositoInformazioniCatture {
     private final String queryPercentuale= "SELECT * FROM percentuali";
     private final String queryCoordinate=" UPDATE tabellacatture SET coordinataX=?,coordinataY=? WHERE data=? and cattura=?";
     private final String queryCatturaEsiste="SELECT codicecattura FROM tabellacatture WHERE data=? and cattura=? ";
+    private final String queryPrecedenti="SELECT codicecattura FROM tabellacatture WHERE data=? and cattura<?";
     public Text personal;
     public Text current;
     public Text best;
@@ -30,7 +31,7 @@ public class DepositoInformazioniCatture {
     private static DepositoInformazioniCatture istanza;
     
     public boolean catturaEsistente(String d,int c){
-        System.out.println("cattura esistente");
+        System.out.println("cattura esistente"+c);
         try( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass", "root","");//,"");
             PreparedStatement st = co.prepareStatement(queryCatturaEsiste);
         ) {
@@ -47,7 +48,26 @@ public class DepositoInformazioniCatture {
         }      
         return false;
     }
-    
+    public boolean primaRigaDisponibile(String d,int c){
+        System.out.println("prima riga");
+        try( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass", "root","");//,"");
+            PreparedStatement st = co.prepareStatement(queryPrecedenti);
+        ) {
+            st.setString(1, d);
+            st.setInt(2, c);
+            
+            ResultSet rs = st.executeQuery();
+            if(rs.isBeforeFirst()){
+                System.out.println("c'è il dato");
+                return true;
+            }
+            return false;
+        } catch (SQLException ex) {
+            
+            System.out.println("Errore prima riga"+ex);
+        }      
+        return false;
+    }
     public DepositoInformazioniCatture(){
         listaCatture= FXCollections.observableArrayList();
         personal = new Text();
@@ -66,9 +86,9 @@ public class DepositoInformazioniCatture {
           
         ) {
             System.out.println("inserisci cattura data"+dc.getData());
-              System.out.println("tecnica: "+dc.getTecnica());
-                System.out.println("esca "+dc.getEsca());
-                System.out.println("numero: "+dc.getNumero());
+            System.out.println("tecnica: "+dc.getTecnica());
+            System.out.println("esca "+dc.getEsca());
+            System.out.println("numero: "+dc.getNumero());
             st.setDate(1,Date.valueOf(dc.getData()));
             st.setInt(2, dc.getNumero());
             if(dc.getPeso().equals(""))
@@ -89,7 +109,6 @@ public class DepositoInformazioniCatture {
         }        
         return -1;
     }
-    /*"SELECT * FROM tabellacatture WHERE data="+d);//(*/
     public void caricaCatture(String d) {
         try ( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass","root","");
             PreparedStatement st = co.prepareStatement(queryCaricamentoCatture);

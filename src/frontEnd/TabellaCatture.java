@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.*;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Gioele
@@ -20,6 +21,8 @@ public class TabellaCatture extends TableView<DatiCattura>{
         private final TableColumn<DatiCattura,Double> colonnaY = new TableColumn("CoordinataX");
         private final TableColumn<DatiCattura,String> colonnaData = new TableColumn("Data");
         private ObservableList<String> tecnichePossibili;
+
+        
         public DepositoInformazioniCatture deposito;
         public TabellaCatture(String d) {
             setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
@@ -64,8 +67,18 @@ public class TabellaCatture extends TableView<DatiCattura>{
         }
 
         private void modificaCelle(CellEditEvent<DatiCattura, String> t,int sw){
-            DatiCattura d= t.getRowValue();
+            DatiCattura d= t.getRowValue();           
             int i;
+            if(d.getNumero()!=1 && !deposito.primaRigaDisponibile(CalendarioPescate.getData(),d.getNumero())){
+                      JOptionPane.showMessageDialog(null, "Aggiungi le catture in ordine",
+                              "ATTENZIONE", JOptionPane.WARNING_MESSAGE);
+                    t.getTableView().getSelectionModel().clearSelection();
+                    d.setEsca("");
+                    d.setPeso("");
+                    d.setTecnica("");
+                    t.getTableView().getItems().set(d.getNumero(), d);
+                    return;
+            }
             switch(sw){
                 case 0:
                     d.setEsca(t.getNewValue());
@@ -96,6 +109,7 @@ public class TabellaCatture extends TableView<DatiCattura>{
                 else
                     d.setCodiceCattura(i);
             }
+            deposito.aggiornaDati(d.getData());
         }
 }
 //1)    mando un int per sapere nel metodo modificaCelle quale sia il valore su cui fare d.set

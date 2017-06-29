@@ -53,14 +53,14 @@ public class InterfacciaApplicazionePesca extends Application {
         Group root = new Group(hbox);
         Scene scene = new Scene(root,1220,650); // x y
   //      ((Group) scene.getRoot()).getChildren().add(graficoTecnicheCatturanti.getPercentuale());
-
+        scene.getStylesheets().add("file:Styles/style.css");
         for (int i=0;i<5;i++){
             ((Group) scene.getRoot()).getChildren().add(gestoreMappaLago.cattura[i]);
         }
   //      clickMouseGrafico();
         clickMouseMappa();
         stage.setTitle("MyBass");
-        scene.getStylesheets().add("file:Styles/style.css");
+
         stage.setScene(scene);
         
         

@@ -61,8 +61,8 @@ public class GestoreMappa {
             System.out.println(i);
             cattura[i].setTranslateX(x);
             cattura[i].setTranslateY(y);
-            cattura[i].setVisible(true);
             if(!caricamento){
+                cattura[i].setVisible(true);
                 DepositoInformazioniCatture.getIstanza().impostaCoordinate(x,y,d,i+1);
             }
         }else{
