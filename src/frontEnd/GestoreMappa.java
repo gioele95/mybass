@@ -74,6 +74,7 @@ public class GestoreMappa {
     public void caricaPosizioni(String d){
 
         DatiCattura dc;
+        numeroSelezionato.setValue(1);
         for(int i=0;i<5;i++){ 
             ObservableList<DatiCattura> ol =DepositoInformazioniCatture.getIstanza().listaCatture;
             if(ol.isEmpty()){

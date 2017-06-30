@@ -1,12 +1,23 @@
 package backEnd;
 
 import com.thoughtworks.xstream.XStream;
+import java.io.*;
 import java.nio.file.*;
-import javax.xml.*;
+import javax.swing.text.*;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.*;
+import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.*;
+import org.xml.sax.InputSource;
+import org.w3c.dom.Document;
 
+/*
+import javax.xml.XMLConstants;
+import javax.xml.parsers.*;
+import javax.xml.transform.dom.DOMSource;
+import org.xml.sax.*;
+import org.w3c.dom.Document;
 /**
  *
  * @author Gioele
@@ -25,22 +36,25 @@ public class CaricatoreValidatoreXML {
 	try{
             xml = new String(Files.readAllBytes(Paths.get(pathFileXML)));
             DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = factory.newSchema(new StreamSource(pathFileXSD));
-	    Validator validator = schema.newValidator();
-	    validator.validate(new StreamSource(xml));
-	    return true;
+            Document documentoXML =  db.parse(new InputSource(new StringReader(xml))); 
+            SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = sf.newSchema(new StreamSource(new File(pathFileXSD)));
+            schema.newValidator().validate(new DOMSource(documentoXML));
+            return true;
 	}catch(Exception ex){
+            System.out.println(ex);
 	    return false;
         }
     }
     public Object prelevaDaXML(){
         try{
-            if(!validaXML())
+            if(!validaXML()){
+                System.out.println("non validato");
                 return null;
+            }
             return streamXML.fromXML(xml);
         } catch(Exception e) {
-            System.out.println("errore caricamento xml "+e.getLocalizedMessage());
+            System.out.println("errore caricamento xml "+ e);
             return null;
         }     
     }
