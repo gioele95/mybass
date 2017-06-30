@@ -37,15 +37,19 @@ public class CalendarioPescate {
         public static String getData(){
             return String.valueOf(dataSelezionata);
         }
+        public void setData(String d){
+            cambioData(LocalDate.parse(d));
+            calendario.setValue(LocalDate.parse(d));
+        }
         private void cambioData(LocalDate value) {
-            if(calendario.getValue().isAfter(LocalDate.now())){
+            if(value.isAfter(LocalDate.now())){
                 System.out.println("dsadsa");
                 JOptionPane.showMessageDialog(null, "Non puoi selezionare una "
                     + "data futura", "ATTENZIONE", JOptionPane.WARNING_MESSAGE);
                 calendario.setValue(dataSelezionata);
                 return;
             }
-            dataSelezionata= calendario.getValue();
+            dataSelezionata= value;
             DepositoInformazioniCatture.getIstanza().caricaCatture
                                     (String.valueOf(dataSelezionata));
             gestore.caricaPosizioni(String.valueOf(dataSelezionata));

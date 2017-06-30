@@ -21,15 +21,36 @@ public class DepositoInformazioniCatture {
     private final String queryCurrentBag= "SELECT bag FROM bagpergiorno WHERE data=?";
     private final String queryPercentuale= "SELECT * FROM percentuali";
     private final String queryCoordinate=" UPDATE tabellacatture SET coordinataX=?,coordinataY=? WHERE data=? and cattura=?";
-    private final String queryCatturaEsiste="SELECT codicecattura FROM tabellacatture WHERE data=? and cattura=? ";
+    private final String queryCatturaEsiste="SELECT * FROM tabellacatture WHERE data=? and cattura=? ";
     private final String queryPrecedenti="SELECT codicecattura FROM tabellacatture WHERE data=? and cattura<?";
+    
+    //queste vanno spostate nel front-end
+    
     public Text personal;
     public Text current;
     public Text best;
     
     
     private static DepositoInformazioniCatture istanza;
-    
+    public DatiCattura getCattura(String d, int c){
+        try( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass", "root","");//,"");
+            PreparedStatement st = co.prepareStatement(queryCatturaEsiste);
+        ) {
+            st.setString(1, d);
+            st.setInt(2, c);
+            
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return (new DatiCattura( rs.getInt("codicecattura"),rs.getInt("cattura"),rs.getString("esca"), 
+                 rs.getString("data"),rs.getString("tecnica"),rs.getString("peso"),
+                 rs.getDouble("coordinataX"),rs.getDouble("coordinataY")));
+            }
+        } catch (SQLException ex) {
+            
+            System.out.println("Errore di inserimento di una cattura "+ex);
+        }  
+        return new DatiCattura();
+    }
     public boolean catturaEsistente(String d,int c){
         System.out.println("cattura esistente"+c);
         try( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass", "root","");//,"");
@@ -95,12 +116,12 @@ public class DepositoInformazioniCatture {
                 st.setDouble(3,0.0);
             else
                 st.setDouble(3,Double.parseDouble(dc.getPeso()));
-            st.setString(4, dc.getTecnica());
-            st.setString(5, dc.getEsca());
-            st.setDouble(6,dc.getCoordinataX());
-            st.setDouble(7,dc.getCoordinataY());
-            st.executeUpdate();
-            ResultSet rs=st.getGeneratedKeys();
+                st.setString(4, dc.getTecnica());
+                st.setString(5, dc.getEsca());
+                st.setDouble(6,dc.getCoordinataX());
+                st.setDouble(7,dc.getCoordinataY());
+                st.executeUpdate();
+                ResultSet rs=st.getGeneratedKeys();
             if(rs.next())
                 return rs.getInt(1);
             return -1;
@@ -168,7 +189,6 @@ public class DepositoInformazioniCatture {
             st.setString(1,dc.getPeso());
             st.setString(2, dc.getTecnica());
             st.setString(3, dc.getEsca());
-            
             st.executeUpdate();
             return 1;
         } catch (SQLException ex) {
@@ -185,11 +205,9 @@ public class DepositoInformazioniCatture {
             st.setDouble(1,x);
             st.setDouble(2,y);
             st.setString(3, d);
-            st.setInt(4, c);
-            
+            st.setInt(4, c);       
             st.executeUpdate();
         } catch (SQLException ex) {
-            
             System.out.println("Errore di inserimento di una cattura "+ex);
         }        
     }

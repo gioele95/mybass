@@ -1,5 +1,6 @@
 package frontEnd;
 
+
 import javafx.application.*;
 import javafx.event.*;
 import javafx.geometry.Insets;
@@ -11,6 +12,8 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
+import javafx.stage.*;
+import middleWare.CacheDatiCatture;
 /**
  * @author Gioele
  */
@@ -31,7 +34,8 @@ public class InterfacciaApplicazionePesca extends Application {
     private Text best;*/
     private CalendarioPescate calendario;
     private GestoreMappa gestoreMappaLago;
-    private TabellaCatture tabella;     
+    private TabellaCatture tabella; 
+    private CacheDatiCatture cache;
     @Override
     public void start(Stage stage) {
         
@@ -50,6 +54,7 @@ public class InterfacciaApplicazionePesca extends Application {
         vboxCentrale = VBoxCentrale();
         hbox.getChildren().addAll(vboxSinistra,vboxCentrale,vboxDestra);
         hbox.setSpacing(40);
+        stage.setOnCloseRequest((WindowEvent we)-> {cache=new CacheDatiCatture(tabella);});
         Group root = new Group(hbox);
         Scene scene = new Scene(root,1220,650); // x y
   //      ((Group) scene.getRoot()).getChildren().add(graficoTecnicheCatturanti.getPercentuale());
@@ -65,6 +70,7 @@ public class InterfacciaApplicazionePesca extends Application {
         
         
         stage.show();
+        cache=new CacheDatiCatture(calendario);
     }
     private VBox VBoxSinistra(){
         calendario=new CalendarioPescate();

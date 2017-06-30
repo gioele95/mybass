@@ -33,13 +33,14 @@ public class GestoreMappa {
            mappaLago.setFitHeight(300);
            mappaLago.setFitWidth(300);
            cattura = new Label[5];
+         
+           hbox();
+           vb.getChildren().addAll(mappaLago,hboxSelezione);
            for (int i=1;i<6;i++){
               cattura[i-1]=new Label (String.valueOf(i));
               cattura[i-1].setVisible(false);
+              vb.getChildren().add(cattura[i-1]);
            }
-           hbox();
-           vb.getChildren().addAll(mappaLago,hboxSelezione,cattura[0],cattura[1],
-                   cattura[2],cattura[3],cattura[4]);
            vb.setSpacing(10);
            hboxSelezione.setPadding(new Insets(10, 30, 10, 30));
     }
@@ -61,8 +62,9 @@ public class GestoreMappa {
             System.out.println(i);
             cattura[i].setTranslateX(x);
             cattura[i].setTranslateY(y);
-            if(!caricamento){
+            if(x!=0)
                 cattura[i].setVisible(true);
+            if(!caricamento){
                 DepositoInformazioniCatture.getIstanza().impostaCoordinate(x,y,d,i+1);
             }
         }else{
@@ -72,7 +74,7 @@ public class GestoreMappa {
         
     }
     public void caricaPosizioni(String d){
-        System.out.println("caricaposizioni");
+
         DatiCattura dc;
         for(int i=0;i<5;i++){ 
             ObservableList<DatiCattura> ol =DepositoInformazioniCatture.getIstanza().listaCatture;
@@ -81,6 +83,7 @@ public class GestoreMappa {
                 return;
             }
             dc=ol.get(i);
+            System.out.println("caricaposizioni "+dc.getNumero());
             clickMappa(dc.getNumero()-1,dc.getCoordinataX(),dc.getCoordinataY(),true,d);
         }
     }
