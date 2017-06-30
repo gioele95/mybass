@@ -29,9 +29,14 @@ public class InterfacciaApplicazionePesca extends Application {
     private VBox vboxSinistra;
     private VBox vboxDestra;
     private HBox hbox;
-/*    private Text personal;
-    private Text current;
-    private Text best;*/
+    
+    
+    public static  Text personal;
+    public static Text current;
+    public static Text best;
+    
+    
+    
     private CalendarioPescate calendario;
     private GestoreMappa gestoreMappaLago;
     private TabellaCatture tabella; 
@@ -79,9 +84,9 @@ public class InterfacciaApplicazionePesca extends Application {
         personalBest = new Label("Personal Best[kg]");
         bestBag = new Label("Best Bag[kg]");
         currentBag = new Label("Current Bag[kg]");
-   /*     best=new Text("d");
-        personal=new Text("a");
-        current=new Text("sdsd");*/
+        best=new Text("");
+        personal=new Text("");
+        current=new Text("");   
         vb.setAlignment(Pos.TOP_LEFT);
         HBox h1= new HBox(20);
         HBox h2= new HBox(20);
@@ -89,15 +94,12 @@ public class InterfacciaApplicazionePesca extends Application {
         h1.setPadding(new Insets(0, 30, 10, 30));
         h2.setPadding(new Insets(0, 10, 10, 30));
         h3.setPadding(new Insets(0, 10, 30, 30));
-        
-        
         vb.getChildren().addAll(calendario.creaCalendario(gestoreMappaLago));
         tabella = new TabellaCatture(calendario.getData());
         System.out.println(calendario.getData());
-        h1.getChildren().addAll(personalBest,tabella.deposito.personal);
-        h2.getChildren().addAll(bestBag,tabella.deposito.best);
-        h3.getChildren().addAll(currentBag,tabella.deposito.current);
-
+        h1.getChildren().addAll(personalBest,personal);
+        h2.getChildren().addAll(bestBag,best);
+        h3.getChildren().addAll(currentBag,current);
         vb.getChildren().addAll(h1,h2,h3);
         return vb;
     }

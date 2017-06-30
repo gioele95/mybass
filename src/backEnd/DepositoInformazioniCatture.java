@@ -1,4 +1,5 @@
 package backEnd;
+import frontEnd.InterfacciaApplicazionePesca;
 import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,13 +24,6 @@ public class DepositoInformazioniCatture {
     private final String queryCoordinate=" UPDATE tabellacatture SET coordinataX=?,coordinataY=? WHERE data=? and cattura=?";
     private final String queryCatturaEsiste="SELECT * FROM tabellacatture WHERE data=? and cattura=? ";
     private final String queryPrecedenti="SELECT codicecattura FROM tabellacatture WHERE data=? and cattura<?";
-    
-    //queste vanno spostate nel front-end
-    
-    public Text personal;
-    public Text current;
-    public Text best;
-    
     
     private static DepositoInformazioniCatture istanza;
     public DatiCattura getCattura(String d, int c){
@@ -91,9 +85,6 @@ public class DepositoInformazioniCatture {
     }
     public DepositoInformazioniCatture(){
         listaCatture= FXCollections.observableArrayList();
-        personal = new Text();
-        current = new Text();
-        best = new Text();
     }
     public static DepositoInformazioniCatture getIstanza(){
         if (istanza==null){
@@ -166,18 +157,20 @@ public class DepositoInformazioniCatture {
         ) { 
             stCurrent.setDate(1,Date.valueOf(d));
             ResultSet rsCurrent = stCurrent.executeQuery();
-            if(rsPersonal.next())
-                personal.setText(String.valueOf(rsPersonal.getInt("personal")));
-            else
-                personal.setText("0");
+            if(rsPersonal.next()){
+                InterfacciaApplicazionePesca.personal.setText(String.valueOf(rsPersonal.getInt("personal")));
+            }
+            else{
+                InterfacciaApplicazionePesca.personal.setText("0");
+            }
             if(rsBest.next())
-                best.setText(String.valueOf(rsBest.getInt("bestbag")));
+                InterfacciaApplicazionePesca.best.setText(String.valueOf(rsBest.getInt("bestbag")));
             else 
-                best.setText("0");
+                InterfacciaApplicazionePesca.best.setText("0");
             if(rsCurrent.next())
-                current.setText(String.valueOf(rsCurrent.getInt("bag")));
+                InterfacciaApplicazionePesca.current.setText(String.valueOf(rsCurrent.getInt("bag")));
             else 
-                current.setText("0");
+                InterfacciaApplicazionePesca.current.setText("0");
         } catch (SQLException e) {System.err.println(e.getMessage());}     
     }
     public int modificaCattura(DatiCattura dc){

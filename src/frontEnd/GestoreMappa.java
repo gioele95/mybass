@@ -71,7 +71,6 @@ public class GestoreMappa {
             JOptionPane.showMessageDialog(null, "Non puoi posizionare una  "
                     + "cattura non esistente", "ATTENZIONE", JOptionPane.WARNING_MESSAGE);
         }
-        
     }
     public void caricaPosizioni(String d){
 
