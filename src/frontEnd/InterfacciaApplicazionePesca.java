@@ -13,7 +13,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javafx.stage.*;
-import middleWare.CacheDatiCatture;
+import middleWare.*;
 /**
  * @author Gioele
  */
@@ -43,6 +43,8 @@ public class InterfacciaApplicazionePesca extends Application {
     private CacheDatiCatture cache;
     @Override
     public void start(Stage stage) {
+        ParametriConfigurazioneXML pc = new ParametriConfigurazioneXML();
+        System.out.println("conf. font"+pc.IPServerDiLog);
         
         bottoneConfermaDati = new Button("Conferma Dati");
         bottoneSvuotaMappa = new Button("Svuota Mappa");

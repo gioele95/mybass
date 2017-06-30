@@ -59,7 +59,6 @@ public class GestoreMappa {
     }
     public void clickMappa(int i,double x, double y,boolean caricamento,String d){
         if(caricamento || DepositoInformazioniCatture.getIstanza().catturaEsistente(d,i+1)){
-            System.out.println(i);
             cattura[i].setTranslateX(x);
             cattura[i].setTranslateY(y);
             if(x!=0)
@@ -82,7 +81,6 @@ public class GestoreMappa {
                 return;
             }
             dc=ol.get(i);
-            System.out.println("caricaposizioni "+dc.getNumero());
             clickMappa(dc.getNumero()-1,dc.getCoordinataX(),dc.getCoordinataY(),true,d);
         }
     }
