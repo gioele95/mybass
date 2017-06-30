@@ -35,7 +35,6 @@ public class CacheDatiCatture implements Serializable{  //1)
         salvaDatiInCache();
     }
     private void salvaDatiInCache(){
-        System.out.println("salvo in cache");
         try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./cache/cache.bin"))) {
             oos.writeObject(this);
             System.out.println("peso: " + this.cachePeso);
@@ -52,8 +51,6 @@ public class CacheDatiCatture implements Serializable{  //1)
             cachePeso = obj.cachePeso;
             cacheTecnica = obj.cacheTecnica;
            // cacheValida = true;
-            
-            System.out.println(cacheData+" data nuova cache");
             calendario.setData(cacheData);
             caricaDatiInTabella();
         } catch(ClassNotFoundException | IOException  e) {

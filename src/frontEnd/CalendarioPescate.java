@@ -43,7 +43,6 @@ public class CalendarioPescate {
         }
         private void cambioData(LocalDate value) {
             if(value.isAfter(LocalDate.now())){
-                System.out.println("dsadsa");
                 JOptionPane.showMessageDialog(null, "Non puoi selezionare una "
                     + "data futura", "ATTENZIONE", JOptionPane.WARNING_MESSAGE);
                 calendario.setValue(dataSelezionata);

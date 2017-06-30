@@ -127,12 +127,10 @@ public class DepositoInformazioniCatture {
         ) { 
             st.setString(1,d);
             ResultSet rs = st.executeQuery();
-            System.out.println("data parametro"+d);              
             Integer i;
             i=0;
             listaCatture.clear();
             while (rs.next()) {
-               System.out.println("data parametro"+d); 
                listaCatture.add(new DatiCattura( rs.getInt("codicecattura"),rs.getInt("cattura"),rs.getString("esca"), 
                rs.getString("data"),rs.getString("tecnica"),rs.getString("peso"),
                rs.getDouble("coordinataX"),rs.getDouble("coordinataY")));

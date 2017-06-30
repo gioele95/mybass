@@ -31,7 +31,6 @@ public class DatiCattura {
         data = new SimpleStringProperty(d.toString());//
         coordinataX = new SimpleDoubleProperty(x);//
         coordinataY = new SimpleDoubleProperty(y);//
-        System.out.println("costr");
     }    
     public DatiCattura() {
          this(-1,-1,"","","","",-1.0,-1.0);
