@@ -39,12 +39,11 @@ public class InterfacciaApplicazionePesca extends Application {
     private GestoreMappa gestoreMappaLago;
     private TabellaCatture tabella; 
     private CacheDatiCatture cache;
-    private ParametriConfigurazioneXML xml;
+    public static ParametriConfigurazioneXML xml;
     @Override
     public void start(Stage stage) {
         xml = new ParametriConfigurazioneXML();
-        //xml = ParametriConfigurazioneXML.prelevaDaXML();
-        System.out.println("conf. "+xml.IPServerLog);
+        System.out.println("conf. "+xml.pathImmagine);
         bottoneConfermaDati = new Button("Conferma Dati");
         bottoneSvuotaMappa = new Button("Svuota Mappa");
         personalBest= new Label("Personal Best");
@@ -145,10 +144,6 @@ public class InterfacciaApplicazionePesca extends Application {
             }
         });
     }
-     
-     
-     
-     
     public static void main(String[] args) {
         launch(args);
     }

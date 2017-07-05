@@ -27,6 +27,7 @@ public class ParametriConfigurazioneXML {
     public String passwordDatabase;
     public int portaDatabase;
     public String IPClient;
+    public String pathImmagine;
 
     public ParametriConfigurazioneXML(){
         ottieniParametriConfigurazioneXML();
@@ -43,6 +44,7 @@ public class ParametriConfigurazioneXML {
         utenteDatabase=par.utenteDatabase;
         passwordDatabase=par.passwordDatabase;
         portaDatabase=par.portaDatabase;
+        pathImmagine=par.pathImmagine;
     }
     
     
