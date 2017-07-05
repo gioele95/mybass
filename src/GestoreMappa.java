@@ -1,10 +1,13 @@
 
-import javafx.event.*;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.*;
-import javafx.scene.input.*;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
+import javafx.scene.layout.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,41 +15,68 @@ import javafx.scene.text.Text;
  */
 public class GestoreMappa {
     public ImageView mappaLago;
-    public Label cattura[];
-    public StackPane pane;
+    public VBox vb;
+    public Label[] cattura;
+    public ComboBox numeroSelezionato;
+    private Label selezioneCattura;
+    private HBox hboxSelezione;
     GestoreMappa() {
-           pane =new StackPane();
-          mappaLago=new ImageView("file:Immagini/lago.png");
-         
+           vb =new VBox();
+           mappaLago=new ImageView("file:Immagini/lago.png");     
            mappaLago.setFitHeight(300);
            mappaLago.setFitWidth(300);
-          /* mappaLago.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent e) -> {
-               System.out.println("Tile pressed ");
-               clickMappa(e.getSceneX(),e.getSceneY());
-           });*/
-           pane.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent e) -> {
-               System.out.println("Tile pressed ");
-               clickMappa(e.getSceneX(),e.getSceneY());
-           });
            cattura = new Label[5];
+         
+           hbox();
+           vb.getChildren().addAll(mappaLago,hboxSelezione);
            for (int i=1;i<6;i++){
-               cattura[i-1]=new Label (String.valueOf(i));
+              cattura[i-1]=new Label (String.valueOf(i));
               cattura[i-1].setVisible(false);
+              vb.getChildren().add(cattura[i-1]);
            }
-           pane.getChildren().addAll(mappaLago, cattura[0]);//cattura[0],cattura[1],cattura[2],cattura[3],cattura[4]);
+           vb.setSpacing(10);
+           hboxSelezione.setPadding(new Insets(10, 30, 10, 30));
     }
-    public void clickMappa(double x, double y){
-       // cattura[0].setTranslateX(x);
-       // cattura[0].setTranslateY(y);
-       pane.getChildren().remove(1);
-       cattura[0].setLayoutX(x);
-       cattura[0].setLayoutY(y);
-       //pane.getChildren().get(1).getLayoutX();//cattura[0].set
-          // mappaLago.setVisible(false);
-       cattura[0].setVisible(true);
-       pane.getChildren().add(cattura[0]);
-       //cattura[0].setText("1");
-        System.out.println(x+" " +y+"\n" + cattura[0].getLayoutX() + "\n" +  pane.getChildren().get(1).getLayoutX());
+    private void hbox(){
         
+        selezioneCattura= new Label ("Seleziona Cattura");
+        ObservableList<Integer> opzioni;
+        selezioneCattura.setStyle("-fx-font-size: 12px;");
+        opzioni = FXCollections.observableArrayList(1,2,3,4,5);
+        numeroSelezionato= new ComboBox(opzioni);
+        numeroSelezionato.setValue(1);
+        hboxSelezione = new HBox(20);
+        hboxSelezione.setSpacing(10);
+        hboxSelezione.setPadding(new Insets(10, 30, 10, 30));
+        hboxSelezione.getChildren().addAll(selezioneCattura,numeroSelezionato);
     }
+    public void clickMappa(int i,double x, double y,boolean caricamento,String d){
+        if(caricamento || DepositoInformazioniCatture.getIstanza().catturaEsistente(d,i+1)){
+            cattura[i].setTranslateX(x);
+            cattura[i].setTranslateY(y);
+            if(x!=0)
+                cattura[i].setVisible(true);
+            if(!caricamento){
+                DepositoInformazioniCatture.getIstanza().impostaCoordinate(x,y,d,i+1);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Non puoi posizionare una  "
+                    + "cattura non esistente", "ATTENZIONE", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    public void caricaPosizioni(String d){
+
+        DatiCattura dc;
+        numeroSelezionato.setValue(1);
+        for(int i=0;i<5;i++){ 
+            ObservableList<DatiCattura> ol =DepositoInformazioniCatture.getIstanza().listaCatture;
+            if(ol.isEmpty()){
+                System.out.println("attenzione observable list vuota");
+                return;
+            }
+            dc=ol.get(i);
+            clickMappa(dc.getNumero()-1,dc.getCoordinataX(),dc.getCoordinataY(),true,d);
+        }
+    }
+
 }

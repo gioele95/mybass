@@ -1,19 +1,18 @@
-import javafx.application.Application;
+
+
+
+import javafx.application.*;
 import javafx.event.*;
 import javafx.geometry.Insets;
 import javafx.geometry.*;
 import javafx.scene.*;
-import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
-import javafx.scene.image.*;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
-
+import javafx.stage.*;
 /**
- *
  * @author Gioele
  */
 public class InterfacciaApplicazionePesca extends Application {
@@ -27,50 +26,68 @@ public class InterfacciaApplicazionePesca extends Application {
     private VBox vboxCentrale;      //1)
     private VBox vboxSinistra;
     private VBox vboxDestra;
-    private BorderPane pane;
-    private Text personal;
-    private Text current;
-    private Text best;
-    private Calendario calendario;
-    private Label percentuale;
+    private HBox hbox;
+    
+    
+    public static  Text personal;
+    public static Text current;
+    public static Text best;
+    
+    
+    
+    private CalendarioPescate calendario;
     private GestoreMappa gestoreMappaLago;
-    private TabellaCatture tabella;
+    private TabellaCatture tabella; 
+    private CacheDatiCatture cache;
+    private ParametriConfigurazioneXML xml;
     @Override
     public void start(Stage stage) {
-        tabella=new TabellaCatture();
+        xml = new ParametriConfigurazioneXML();
+        //xml = ParametriConfigurazioneXML.prelevaDaXML();
+        System.out.println("conf. "+xml.IPServerLog);
         bottoneConfermaDati = new Button("Conferma Dati");
         bottoneSvuotaMappa = new Button("Svuota Mappa");
         personalBest= new Label("Personal Best");
         bestBag= new Label("Best Bag");
         currentBag= new Label("Current Bag");
         graficoTecnicheCatturanti= new GraficoTecnicheCatturanti();
-        percentuale=new Label("");
-        pane = new BorderPane();
+        //percentuale=new Label("");
+        hbox = new HBox();
         gestoreMappaLago=new GestoreMappa();
         vboxSinistra= VBoxSinistra();
+        //tabella=new TabellaCatture(calendario.dataSelezionata.toString());
         vboxDestra= VBoxDestra();
         vboxCentrale = VBoxCentrale();
-        pane.setRight(vboxDestra);
-        pane.setCenter(vboxCentrale);
-        pane.setLeft(vboxSinistra);
-        Group root = new Group(pane);
-        Scene scene = new Scene(root);
-        ((Group) scene.getRoot()).getChildren().add(percentuale);
-        clickMouseGrafico();
+        hbox.getChildren().addAll(vboxSinistra,vboxCentrale,vboxDestra);
+        hbox.setSpacing(40);
+        stage.setOnCloseRequest((WindowEvent we)-> {cache=new CacheDatiCatture(tabella);});
+        Group root = new Group(hbox);
+        Scene scene = new Scene(root,1220,650); // x y
+  //      ((Group) scene.getRoot()).getChildren().add(graficoTecnicheCatturanti.getPercentuale());
+        scene.getStylesheets().add("file:Styles/style.css");
+        for (int i=0;i<5;i++){
+            ((Group) scene.getRoot()).getChildren().add(gestoreMappaLago.cattura[i]);
+        }
+  //      clickMouseGrafico();
+        clickMouseMappa();
         stage.setTitle("MyBass");
+
         stage.setScene(scene);
+        
+        
         stage.show();
+        cache=new CacheDatiCatture(calendario);
     }
     private VBox VBoxSinistra(){
-        calendario=new Calendario();
+        calendario=new CalendarioPescate();
         VBox vb= new VBox(30);
         vb.setPadding(new Insets(30, 30, 30, 30));
         personalBest = new Label("Personal Best[kg]");
         bestBag = new Label("Best Bag[kg]");
         currentBag = new Label("Current Bag[kg]");
-        best=new Text();
-        personal=new Text();
-        current=new Text("sdsd");
+        best=new Text("");
+        personal=new Text("");
+        current=new Text("");   
         vb.setAlignment(Pos.TOP_LEFT);
         HBox h1= new HBox(20);
         HBox h2= new HBox(20);
@@ -78,51 +95,60 @@ public class InterfacciaApplicazionePesca extends Application {
         h1.setPadding(new Insets(0, 30, 10, 30));
         h2.setPadding(new Insets(0, 10, 10, 30));
         h3.setPadding(new Insets(0, 10, 30, 30));
+        vb.getChildren().addAll(calendario.creaCalendario(gestoreMappaLago));
+        tabella = new TabellaCatture(calendario.getData());
         h1.getChildren().addAll(personalBest,personal);
         h2.getChildren().addAll(bestBag,best);
         h3.getChildren().addAll(currentBag,current);
-        vb.getChildren().addAll(calendario.creaCalendario());
         vb.getChildren().addAll(h1,h2,h3);
         return vb;
     }
     private VBox VBoxCentrale(){
         VBox v = new VBox();
-        v.setPadding(new Insets(20, 100, 300, 150));
-       
+        v.setPadding(new Insets(20, 100, 100, 50));
         titolo = new Label("MYBASS");
-        tabella = new TabellaCatture();
+
+        //tabella.setFixedCellSize(5);
         titolo.setStyle("-fx-font-size: 30px;");
         v.getChildren().addAll(titolo,tabella);
+    //   tabella.setMaxSize(700,176);
         v.setAlignment(Pos.TOP_CENTER);
         v.setSpacing(100);
+        gestoreMappaLago.caricaPosizioni(calendario.getData());
         return v; 
     }
     private VBox VBoxDestra(){
         graficoTecnicheCatturanti=new GraficoTecnicheCatturanti();
-        VBox vb=new VBox(20);
-        vb.setPadding(new Insets(10, 10, 30, 100));
+        VBox vb=new VBox();
+        vb.setPadding(new Insets(10, 10, 10, 10));
         vb.setPrefWidth(80);
         vb.setPrefHeight(80);
-        vb.getChildren().addAll(gestoreMappaLago.pane,graficoTecnicheCatturanti.grafico);
+        vb.getChildren().addAll(gestoreMappaLago.vb,GraficoTecnicheCatturanti.getGrafico());
         return vb;
     }
-    private void clickMouseGrafico(){
-            percentuale.setTextFill(Color.BLACK);
-            percentuale.setStyle("-fx-font: 12 arial;");
-            for (final PieChart.Data data : graficoTecnicheCatturanti.grafico.getData()) {
+   /* private void clickMouseGrafico(){
+            for (final PieChart.Data data : GraficoTecnicheCatturanti.getGrafico().getData()) {
                 data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent e) {
-                        percentuale.setTranslateX(e.getSceneX());
-                        percentuale.setTranslateY(e.getSceneY());
-                        System.out.println("x "+e.getSceneX()+ " y "+e.getSceneY());
-                        percentuale.setText(String.valueOf(data.getPieValue()) + "%");
+                        graficoTecnicheCatturanti.clickGrafico(e.getSceneX(), e.getSceneY(),String.valueOf(data.getPieValue()));
                     }
                 });
             }
+    }*/
+    private void clickMouseMappa(){
+        gestoreMappaLago.mappaLago.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        @Override
+            public void handle(MouseEvent e) {
+                gestoreMappaLago.clickMappa((Integer)gestoreMappaLago.numeroSelezionato.getValue()-1,e.getSceneX()-3,e.getSceneY()-10,false,calendario.getData());
+            }
+        });
     }
-
+     
+     
+     
+     
     public static void main(String[] args) {
         launch(args);
     }
