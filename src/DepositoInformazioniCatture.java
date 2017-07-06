@@ -9,6 +9,10 @@ import javafx.scene.chart.PieChart;
  * @author Gioele
  */
 public class DepositoInformazioniCatture {
+    private final String utenteDB;
+    private final String passDB;
+    private final String URICon;
+
     public ObservableList<DatiCattura> listaCatture;
     private final String queryInserimentoCattura = "INSERT INTO tabellacatture(data,cattura,peso,tecnica,esca,"
             + "                                 coordinataX,coordinataY) VALUES(?,?,?,?,?,?,?) ";
@@ -25,7 +29,7 @@ public class DepositoInformazioniCatture {
     
     private static DepositoInformazioniCatture istanza;
     public DatiCattura getCattura(String d, int c){
-        try( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass", "root","");//,"");
+        try ( Connection co = DriverManager.getConnection(URICon,utenteDB,passDB);
             PreparedStatement st = co.prepareStatement(queryCatturaEsiste);
         ) {
             st.setString(1, d);
@@ -45,7 +49,7 @@ public class DepositoInformazioniCatture {
     }
     public boolean catturaEsistente(String d,int c){
         System.out.println("cattura esistente"+c);
-        try( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass", "root","");//,"");
+        try ( Connection co = DriverManager.getConnection(URICon,utenteDB,passDB);
             PreparedStatement st = co.prepareStatement(queryCatturaEsiste);
         ) {
             st.setString(1, d);
@@ -63,7 +67,7 @@ public class DepositoInformazioniCatture {
     }
     public boolean primaRigaDisponibile(String d,int c){
         System.out.println("prima riga");
-        try( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass", "root","");//,"");
+        try ( Connection co = DriverManager.getConnection(URICon,utenteDB,passDB);
             PreparedStatement st = co.prepareStatement(queryPrecedenti);
         ) {
             st.setString(1, d);
@@ -82,6 +86,10 @@ public class DepositoInformazioniCatture {
         return false;
     }
     public DepositoInformazioniCatture(){
+        ParametriConfigurazioneXML p=new ParametriConfigurazioneXML();
+        utenteDB=p.utenteDatabase;
+        passDB=p.passwordDatabase;
+        URICon= "jdbc:mysql://"+p.hostnameDatabase+":"+p.portaDatabase+"/mybass";
         listaCatture= FXCollections.observableArrayList();
     }
     public static DepositoInformazioniCatture getIstanza(){
@@ -91,7 +99,7 @@ public class DepositoInformazioniCatture {
         return istanza;
     }
     public int inserisciCattura(DatiCattura dc) { 
-        try( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass","root","");
+        try ( Connection co = DriverManager.getConnection(URICon,utenteDB,passDB);
             PreparedStatement st = co.prepareStatement(queryInserimentoCattura,Statement.RETURN_GENERATED_KEYS);
           
         ) {
@@ -120,7 +128,7 @@ public class DepositoInformazioniCatture {
         return -1;
     }
     public void caricaCatture(String d) {
-        try ( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass","root","");
+        try ( Connection co = DriverManager.getConnection(URICon,utenteDB,passDB);
             PreparedStatement st = co.prepareStatement(queryCaricamentoCatture);
         ) { 
             st.setString(1,d);
@@ -134,8 +142,9 @@ public class DepositoInformazioniCatture {
                rs.getDouble("coordinataX"),rs.getDouble("coordinataY")));
                i++;
             }
-            if(i!=5)
-                while(i<5){
+            int nmax=ParametriConfigurazioneXML.ottieniParametriConfigurazioneXML().numeroMassimoPesci;
+            if(i!=nmax)
+                while(i<nmax){
                     listaCatture.add(new DatiCattura(-1,i+1,"","","","",0.0,0.0));
                     i++;
                 }
@@ -144,7 +153,7 @@ public class DepositoInformazioniCatture {
 
     }
     public void aggiornaDati(String d){
-         try ( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass","root","");   //9
+        try ( Connection co = DriverManager.getConnection(URICon,utenteDB,passDB); ///9)
             PreparedStatement stBestBag = co.prepareStatement(queryBestBag);
             PreparedStatement stPersonal = co.prepareStatement(queryPersonalBest);
             PreparedStatement stCurrent = co.prepareStatement(queryCurrentBag);
@@ -171,7 +180,7 @@ public class DepositoInformazioniCatture {
     }
     public int modificaCattura(DatiCattura dc){
         System.out.println("modificaCattura");
-        try( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass", "root","");//,"");
+        try ( Connection co = DriverManager.getConnection(URICon,utenteDB,passDB);
             PreparedStatement st = co.prepareStatement(queryModificaCattura);
         ) {
             st.setInt(4,dc.getCodiceCattura());
@@ -188,7 +197,7 @@ public class DepositoInformazioniCatture {
     }
      public void impostaCoordinate(double x, double y,String d,int c){
         System.out.println("imposta coordinate");
-        try( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass", "root","");//,"");
+        try ( Connection co = DriverManager.getConnection(URICon,utenteDB,passDB);
             PreparedStatement st = co.prepareStatement(queryCoordinate);
         ) {
             st.setDouble(1,x);
@@ -203,7 +212,7 @@ public class DepositoInformazioniCatture {
     public ObservableList<PieChart.Data> percentuale(){
         ObservableList<PieChart.Data> l;
         l = FXCollections.observableArrayList();
-        try ( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass","root","");   //9
+        try ( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass","root","");   
             PreparedStatement st = co.prepareStatement(queryPercentuale);
                 ResultSet rs = st.executeQuery();
         ) { 

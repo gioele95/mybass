@@ -13,10 +13,6 @@ import javax.xml.validation.SchemaFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-/**
- *
- * @author Gioele
- */
 public class ParametriConfigurazioneXML {
     public int numeroMassimoPesci;
     public  String coloreSfondo;
@@ -31,10 +27,7 @@ public class ParametriConfigurazioneXML {
 
     public ParametriConfigurazioneXML(){
         ottieniParametriConfigurazioneXML();
-    }
-    private void ottieniParametriConfigurazioneXML(){
-        CaricatoreValidatoreXML caricatore= new CaricatoreValidatoreXML("configurazione/conf.xsd","configurazione/conf.xml");
-        ParametriConfigurazioneXML par=  (ParametriConfigurazioneXML)caricatore.prelevaDaXML();
+        ParametriConfigurazioneXML par=ParametriConfigurazioneXML.ottieniParametriConfigurazioneXML();
         IPServerLog=par.IPServerLog;
         portaServerLog=par.portaServerLog;
         IPClient=par.IPClient;
@@ -45,6 +38,11 @@ public class ParametriConfigurazioneXML {
         passwordDatabase=par.passwordDatabase;
         portaDatabase=par.portaDatabase;
         pathImmagine=par.pathImmagine;
+    }
+    public static ParametriConfigurazioneXML ottieniParametriConfigurazioneXML(){
+        CaricatoreValidatoreXML caricatore= new CaricatoreValidatoreXML("configurazione/conf.xsd","configurazione/conf.xml");
+        ParametriConfigurazioneXML par=  (ParametriConfigurazioneXML)caricatore.prelevaDaXML();
+        return par;
     }
     
     
@@ -64,16 +62,4 @@ public class ParametriConfigurazioneXML {
 	    return false;
         }
     }
- /*   public static ParametriConfigurazioneXML prelevaDaXML(){
-        XStream xs = new XStream();
-        if(!validaXML()){
-            System.out.println("non validato");
-            return null;
-        }
-        System.out.println("valido");
-        return  (ParametriConfigurazioneXML)xs.fromXML(new File("conf.xml"));
-    }*/
-
-
-
 }

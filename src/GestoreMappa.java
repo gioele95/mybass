@@ -5,9 +5,9 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,16 +20,19 @@ public class GestoreMappa {
     public ComboBox numeroSelezionato;
     private Label selezioneCattura;
     private HBox hboxSelezione;
+    private int nmaxPesci;
     GestoreMappa() {
+           nmaxPesci=ParametriConfigurazioneXML.ottieniParametriConfigurazioneXML().numeroMassimoPesci;
+           String s= "file:"+ParametriConfigurazioneXML.ottieniParametriConfigurazioneXML().pathImmagine;
            vb =new VBox();
-           mappaLago=new ImageView("file:Immagini/lago.png");     
+           mappaLago=new ImageView(s);     
            mappaLago.setFitHeight(300);
            mappaLago.setFitWidth(300);
-           cattura = new Label[5];
+           cattura = new Label[nmaxPesci];
          
            hbox();
            vb.getChildren().addAll(mappaLago,hboxSelezione);
-           for (int i=1;i<6;i++){
+           for (int i=1;i<nmaxPesci+1;i++){
               cattura[i-1]=new Label (String.valueOf(i));
               cattura[i-1].setVisible(false);
               vb.getChildren().add(cattura[i-1]);
@@ -40,9 +43,11 @@ public class GestoreMappa {
     private void hbox(){
         
         selezioneCattura= new Label ("Seleziona Cattura");
-        ObservableList<Integer> opzioni;
+        ObservableList<Integer> opzioni= FXCollections.observableArrayList();
         selezioneCattura.setStyle("-fx-font-size: 12px;");
-        opzioni = FXCollections.observableArrayList(1,2,3,4,5);
+        for (int i=1;i<nmaxPesci+1;i++){
+           opzioni.add(i);
+        }
         numeroSelezionato= new ComboBox(opzioni);
         numeroSelezionato.setValue(1);
         hboxSelezione = new HBox(20);
@@ -60,15 +65,17 @@ public class GestoreMappa {
                 DepositoInformazioniCatture.getIstanza().impostaCoordinate(x,y,d,i+1);
             }
         }else{
-            JOptionPane.showMessageDialog(null, "Non puoi posizionare una  "
-                    + "cattura non esistente", "ATTENZIONE", JOptionPane.WARNING_MESSAGE);
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("ATTENZIONE");
+            alert.setContentText("non puoi inserire una posizione per una cattura inesistente");
+            alert.showAndWait();
         }
     }
     public void caricaPosizioni(String d){
 
         DatiCattura dc;
         numeroSelezionato.setValue(1);
-        for(int i=0;i<5;i++){ 
+        for(int i=0;i<nmaxPesci;i++){ 
             ObservableList<DatiCattura> ol =DepositoInformazioniCatture.getIstanza().listaCatture;
             if(ol.isEmpty()){
                 System.out.println("attenzione observable list vuota");

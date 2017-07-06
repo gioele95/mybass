@@ -16,7 +16,6 @@ import javafx.stage.*;
  * @author Gioele
  */
 public class InterfacciaApplicazionePesca extends Application {
-    private Button bottoneSvuotaMappa;
     private Button bottoneConfermaDati;
     private GraficoTecnicheCatturanti graficoTecnicheCatturanti;
     private Label personalBest;
@@ -34,7 +33,7 @@ public class InterfacciaApplicazionePesca extends Application {
     public static Text best;
     
     
-    
+    private String colore;
     private CalendarioPescate calendario;
     private GestoreMappa gestoreMappaLago;
     private TabellaCatture tabella; 
@@ -43,15 +42,16 @@ public class InterfacciaApplicazionePesca extends Application {
     @Override
     public void start(Stage stage) {
         xml = new ParametriConfigurazioneXML();
+        colore="-fx-background-color: " + xml.coloreSfondo + ";";
         System.out.println("conf. "+xml.pathImmagine);
         bottoneConfermaDati = new Button("Conferma Dati");
-        bottoneSvuotaMappa = new Button("Svuota Mappa");
         personalBest= new Label("Personal Best");
         bestBag= new Label("Best Bag");
         currentBag= new Label("Current Bag");
         graficoTecnicheCatturanti= new GraficoTecnicheCatturanti();
         //percentuale=new Label("");
         hbox = new HBox();
+        hbox.setStyle(colore);
         gestoreMappaLago=new GestoreMappa();
         vboxSinistra= VBoxSinistra();
         //tabella=new TabellaCatture(calendario.dataSelezionata.toString());
@@ -61,10 +61,10 @@ public class InterfacciaApplicazionePesca extends Application {
         hbox.setSpacing(40);
         stage.setOnCloseRequest((WindowEvent we)-> {cache=new CacheDatiCatture(tabella);});
         Group root = new Group(hbox);
-        Scene scene = new Scene(root,1220,650); // x y
+        Scene scene = new Scene(root,1160,650); // x y
   //      ((Group) scene.getRoot()).getChildren().add(graficoTecnicheCatturanti.getPercentuale());
         scene.getStylesheets().add("file:Styles/style.css");
-        for (int i=0;i<5;i++){
+        for (int i=0;i<xml.numeroMassimoPesci;i++){
             ((Group) scene.getRoot()).getChildren().add(gestoreMappaLago.cattura[i]);
         }
   //      clickMouseGrafico();
