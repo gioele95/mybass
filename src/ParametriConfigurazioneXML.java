@@ -41,7 +41,7 @@ public class ParametriConfigurazioneXML {
     }
     public static ParametriConfigurazioneXML ottieniParametriConfigurazioneXML(){
         CaricatoreValidatoreXML caricatore= new CaricatoreValidatoreXML("configurazione/conf.xsd","configurazione/conf.xml");
-        ParametriConfigurazioneXML par=  (ParametriConfigurazioneXML)caricatore.prelevaDaXML();
+        ParametriConfigurazioneXML par=  (ParametriConfigurazioneXML)caricatore.prelevaDaXML("");
         return par;
     }
     

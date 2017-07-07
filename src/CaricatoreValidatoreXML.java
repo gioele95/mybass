@@ -2,12 +2,14 @@
 
 import com.thoughtworks.xstream.XStream;
 import java.io.File;
+import java.io.StringReader;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.*;
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 public class CaricatoreValidatoreXML {
     private String pathFileXML;
@@ -16,26 +18,30 @@ public class CaricatoreValidatoreXML {
         pathFileXSD=xsd;
         pathFileXML=xml;
     }
-    private boolean validaXML(){
+    public void setPathXML(String s){
+        pathFileXML=s;        
+    }
+    private boolean validaXML(String xml){
+        Document d;
 	try{
             DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            
-            Document d =  db.parse(new File(pathFileXML)); 
-            
+            if(xml.equals(""))                                                   //1)
+                d =  db.parse(new File(pathFileXML)); 
+            else
+                d=  db.parse(new InputSource(new StringReader(xml))); 
             Schema s= sf.newSchema(new StreamSource(new File(pathFileXSD)));
             
             s.newValidator().validate(new DOMSource(d));
-            System.out.println("pathxsd "+pathFileXSD+ " pathXML "+pathFileXML);
             return true;
 	}catch(Exception ex){
                         System.out.println("exc"+ex);
 	    return false;
         }
     }
-    public Object prelevaDaXML(){
+    public Object prelevaDaXML(String s){
         XStream xs = new XStream();
-        if(!validaXML()){
+        if(!validaXML(s)){
             System.out.println("non validato");
             return null;
         }
@@ -43,3 +49,4 @@ public class CaricatoreValidatoreXML {
         return  xs.fromXML(new File(pathFileXML));
     }
 }
+//1) se è "" riguarda la validazione dei parametri di configurazione.

@@ -1,14 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import java.io.*;
+import java.text.*;
+import java.util.*;
+public class EventoXML { 
+    public final String nomeEvento; 
+    public String IPClient;
+    public final String data;
+    public final String ora;    
+    public EventoXML(String evento, String IPClient) {
+        nomeEvento = evento;
+        this.IPClient = IPClient;
+        data = new SimpleDateFormat("yyyy-MM-dd").format((new Date()));
+        ora =new SimpleDateFormat("HH:mm:ss").format((new Date()));
+    }
 
-
-/**
- *
- * @author Gioele
- */
-public class EventoXML {
-    
-}
+}   
