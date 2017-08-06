@@ -69,7 +69,10 @@ public class GestoreMappa {
             alert.setTitle("ATTENZIONE");
             alert.setContentText("non puoi inserire una posizione per una cattura inesistente");
             alert.showAndWait();
+            
         }
+        ParametriConfigurazioneXML p= ParametriConfigurazioneXML.ottieniParametriConfigurazioneXML();
+        ClientEventiXML.inviaLog("Click Mappa", p.IPServerLog, p.portaServerLog, p.IPClient);
     }
     public void caricaPosizioni(String d){
 

@@ -24,6 +24,7 @@ public class CaricatoreValidatoreXML {
     private boolean validaXML(String xml){
         Document d;
 	try{
+            System.out.println("validazione : "+ pathFileXSD);
             DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             if(xml.equals(""))                                                   //1)

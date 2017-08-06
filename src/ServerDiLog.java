@@ -13,8 +13,13 @@ public class ServerDiLog {
         //indirizzoIP=s;
     }
     public static void aggiungiAlFile(String xml){
+                        System.out.println("2");
+
         CaricatoreValidatoreXML valid = new CaricatoreValidatoreXML("log/EventoLog.xsd",null);
+                        System.out.println("3");
+
         if(valid.prelevaDaXML(xml)==null) { 
+            System.out.println("non valido");
             return;
         }
        // String ls = System.lineSeparator();
@@ -32,13 +37,21 @@ public class ServerDiLog {
          ServerDiLog sdl = new ServerDiLog(8080,"localhost");
         while(true) {
             System.out.println("In attesa di connessioni...");
+                            System.out.println("4");
+
             try(
+                     
+                
                 ServerSocket socketServerDiLog = new ServerSocket(portaAscolto);
                 Socket s = socketServerDiLog.accept();
                 DataInputStream dis = new DataInputStream(s.getInputStream());
             ) {
-                String attivitaXML = (String)dis.readUTF(); //(2)
-                System.out.println("Ricevuto: "+attivitaXML);
+                System.out.println("1");
+               
+                String attivitaXML = (String)dis.readUTF(); 
+
+                System.out.println("Ricevutog: "+attivitaXML);
+                
                 aggiungiAlFile(attivitaXML);                
             } catch(Exception e) {
                 System.out.println("Errore server: "+e.getMessage());
