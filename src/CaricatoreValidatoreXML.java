@@ -21,7 +21,7 @@ public class CaricatoreValidatoreXML {
     public void setPathXML(String s){
         pathFileXML=s;        
     }
-    private boolean validaXML(String xml){
+    public boolean validaXML(String xml){
         Document d;
 	try{
             System.out.println("validazione : "+ pathFileXSD);

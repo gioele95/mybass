@@ -41,7 +41,9 @@ public class InterfacciaApplicazionePesca extends Application {
     public static ParametriConfigurazioneXML xml;
     @Override
     public void start(Stage stage) {
+        
         xml = new ParametriConfigurazioneXML();
+        ClientEventiXML.inviaLog("Avvio Applicazione", xml.IPServerLog, xml.portaServerLog, xml.IPClient);
         colore="-fx-background-color: " + xml.coloreSfondo + ";";
         System.out.println("conf. "+xml.pathImmagine);
         bottoneConfermaDati = new Button("Conferma Dati");
@@ -59,7 +61,8 @@ public class InterfacciaApplicazionePesca extends Application {
         vboxCentrale = VBoxCentrale();
         hbox.getChildren().addAll(vboxSinistra,vboxCentrale,vboxDestra);
         hbox.setSpacing(40);
-        stage.setOnCloseRequest((WindowEvent we)-> {cache=new CacheDatiCatture(tabella);});
+        stage.setOnCloseRequest((WindowEvent we)-> {cache=new CacheDatiCatture(tabella);
+            ClientEventiXML.inviaLog("Chiusura Applicazione", xml.IPServerLog, xml.portaServerLog, xml.IPClient);});
         Group root = new Group(hbox);
         Scene scene = new Scene(root,1160,650); // x y
   //      ((Group) scene.getRoot()).getChildren().add(graficoTecnicheCatturanti.getPercentuale());
@@ -125,17 +128,6 @@ public class InterfacciaApplicazionePesca extends Application {
         vb.getChildren().addAll(gestoreMappaLago.vb,GraficoTecnicheCatturanti.getGrafico());
         return vb;
     }
-   /* private void clickMouseGrafico(){
-            for (final PieChart.Data data : GraficoTecnicheCatturanti.getGrafico().getData()) {
-                data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent e) {
-                        graficoTecnicheCatturanti.clickGrafico(e.getSceneX(), e.getSceneY(),String.valueOf(data.getPieValue()));
-                    }
-                });
-            }
-    }*/
     private void clickMouseMappa(){
         gestoreMappaLago.mappaLago.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
         @Override

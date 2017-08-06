@@ -72,7 +72,10 @@ public class GestoreMappa {
             
         }
         ParametriConfigurazioneXML p= ParametriConfigurazioneXML.ottieniParametriConfigurazioneXML();
-        ClientEventiXML.inviaLog("Click Mappa", p.IPServerLog, p.portaServerLog, p.IPClient);
+        if(!caricamento){
+            System.out.println("mando log click");
+            ClientEventiXML.inviaLog("Click Mappa", p.IPServerLog, p.portaServerLog, p.IPClient);
+        }
     }
     public void caricaPosizioni(String d){
 
