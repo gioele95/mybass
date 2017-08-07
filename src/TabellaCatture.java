@@ -40,11 +40,14 @@ public class TabellaCatture extends TableView<DatiCattura>{
             colonnaPeso.setCellFactory(TextFieldTableCell.<DatiCattura>forTableColumn());//(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
             deposito.caricaCatture(d);
             setItems(deposito.listaCatture);
+           
             inizializzaEventi();
+            
             colonnaCattura.setPrefWidth(60);
             colonnaEsca.setPrefWidth(150);
             colonnaPeso.setPrefWidth(60);
             colonnaTecnica.setPrefWidth(100);
+          //  confermaDati();
         }
         private void assegnaTecnichePossibili() {
             tecnichePossibili = FXCollections.observableArrayList();
@@ -64,7 +67,7 @@ public class TabellaCatture extends TableView<DatiCattura>{
             });
         }
 
-        private void modificaCelle(CellEditEvent<DatiCattura, String> t,int sw){
+        /*private void modificaCelle(CellEditEvent<DatiCattura, String> t,int sw){
             DatiCattura d= t.getRowValue();           
             int i;
             if(d.getNumero()!=1 && !deposito.primaRigaDisponibile(CalendarioPescate.getData(),d.getNumero())){
@@ -108,6 +111,68 @@ public class TabellaCatture extends TableView<DatiCattura>{
                     d.setCodiceCattura(i);
             }
             deposito.aggiornaDati(d.getData());
+        }*/
+        private void modificaCelle(CellEditEvent<DatiCattura, String> t,int sw){
+            DatiCattura d= t.getRowValue();           
+            int i;
+            if(d.getNumero()!=1 && !deposito.primaRigaDisponibile(CalendarioPescate.getData(),d.getNumero())){
+                      JOptionPane.showMessageDialog(null, "Aggiungi le catture in ordine",
+                              "ATTENZIONE", JOptionPane.WARNING_MESSAGE);
+                    t.getTableView().getSelectionModel().clearSelection();
+                    d.setEsca("");
+                    d.setPeso("");
+                    d.setTecnica("");
+                    t.getTableView().getItems().set(d.getNumero(), d);
+                    return;
+            }
+            switch(sw){
+                case 0:
+                    d.setEsca(t.getNewValue());
+                    break;
+                case 1:
+                    d.setTecnica(t.getNewValue());
+                    break;
+                case 2:
+                    d.setPeso(t.getNewValue());
+                    break;   
+            }     
+            if(d.getCodiceCattura()!=-1){
+                //deposito.modificaCattura(d);
+                deposito.listaCatture.set(d.getNumero()-1, d);
+               /* if(sw==1){
+                    System.out.println("dopo la inserisci voglio aggiornare il grafico");
+                    GraficoTecnicheCatturanti.aggiornaGrafico();
+                } */
+            }
+            else {
+                d.setData(CalendarioPescate.getData());
+                deposito.listaCatture.set(d.getNumero()-1, d);
+               /* if(sw==1){
+                    System.out.println("dopo la inserisci voglio aggiornare il grafico");
+                    GraficoTecnicheCatturanti.aggiornaGrafico();
+                }  
+             /* */
+            }
+            //deposito.aggiornaDati(d.getData());
+        }
+        public void confermaDati(){
+            //DatiCattura d = this.getItems().get(0);
+            System.out.println("confermaaa");
+            for (DatiCattura d: deposito.listaCatture) {
+                if(d.getData().equals(""))
+                    break;
+                if(d.getCodiceCattura()==-1){
+                    int i=deposito.inserisciCattura(d);
+                    if(i==-1)
+                        System.out.println("attenzione inserimento cattura fallito la inserisci ha ritornato-1");
+                    else
+                        d.setCodiceCattura(i);
+                }else{
+                    deposito.modificaCattura(d);
+                }   
+            }
+            GraficoTecnicheCatturanti.aggiornaGrafico();
+            deposito.aggiornaDati(CalendarioPescate.getData());
         }
 }
 //1)    mando un int per sapere nel metodo modificaCelle quale sia il valore su cui fare d.set

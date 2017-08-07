@@ -1,5 +1,4 @@
 
-
 import java.time.LocalDate;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
@@ -17,10 +16,12 @@ public class CalendarioPescate {
         private TabellaCatture tabella;
         private GestoreMappa gestore;
         public GridPane creaCalendario(GestoreMappa g){
+            ParametriConfigurazioneXML xml = new ParametriConfigurazioneXML();
             gestore=g;
             calendario = new DatePicker(LocalDate.now());
             dataSelezionata=LocalDate.now();
-            calendario.setOnAction((e) -> {cambioData(calendario.getValue());});
+            calendario.setOnAction((e) -> {cambioData(calendario.getValue());
+                                             ClientEventiXML.inviaLog("Cambio Data ", xml.IPServerLog, xml.portaServerLog, xml.IPClient);});
             gridPane = new GridPane();
             gridPane.setHgap(10);
             gridPane.setVgap(10);

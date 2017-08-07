@@ -18,7 +18,7 @@ public class DepositoInformazioniCatture {
             + "                                 coordinataX,coordinataY) VALUES(?,?,?,?,?,?,?) ";
     private final String queryCaricamentoCatture = "SELECT * FROM tabellacatture WHERE data= ?";
     private final String queryModificaCattura = "UPDATE tabellacatture SET peso=?, "
-                                        + "tecnica=?, esca=? where codicecattura=?";
+                                        + "tecnica=?, esca=?,coordinataX=?,coordinataY=? where codicecattura=?";
     private final String queryPersonalBest = "SELECT max(peso) as personal FROM tabellacatture";
     private final String queryBestBag= "SELECT max(bag) as bestbag FROM bagpergiorno";
     private final String queryCurrentBag= "SELECT bag FROM bagpergiorno WHERE data=?";
@@ -107,18 +107,19 @@ public class DepositoInformazioniCatture {
             System.out.println("tecnica: "+dc.getTecnica());
             System.out.println("esca "+dc.getEsca());
             System.out.println("numero: "+dc.getNumero());
+            System.out.println("coordinatax "+dc.getCoordinataX() );
             st.setDate(1,Date.valueOf(dc.getData()));
             st.setInt(2, dc.getNumero());
             if(dc.getPeso().equals(""))
                 st.setDouble(3,0.0);
             else
                 st.setDouble(3,Double.parseDouble(dc.getPeso()));
-                st.setString(4, dc.getTecnica());
-                st.setString(5, dc.getEsca());
-                st.setDouble(6,dc.getCoordinataX());
-                st.setDouble(7,dc.getCoordinataY());
-                st.executeUpdate();
-                ResultSet rs=st.getGeneratedKeys();
+            st.setString(4, dc.getTecnica());
+            st.setString(5, dc.getEsca());
+            st.setDouble(6,dc.getCoordinataX());
+            st.setDouble(7,dc.getCoordinataY());
+            st.executeUpdate();
+            ResultSet rs=st.getGeneratedKeys();
             if(rs.next())
                 return rs.getInt(1);
             return -1;
@@ -183,10 +184,14 @@ public class DepositoInformazioniCatture {
         try ( Connection co = DriverManager.getConnection(URICon,utenteDB,passDB);
             PreparedStatement st = co.prepareStatement(queryModificaCattura);
         ) {
-            st.setInt(4,dc.getCodiceCattura());
+            System.out.println("MODUIFICAAAAAAAAA numero: "+dc.getNumero());
+            System.out.println("coordinatax "+dc.getCoordinataX() );
+            st.setInt(6,dc.getCodiceCattura());
             st.setString(1,dc.getPeso());
             st.setString(2, dc.getTecnica());
             st.setString(3, dc.getEsca());
+            st.setDouble(4,dc.getCoordinataX());
+            st.setDouble(5,dc.getCoordinataY());
             st.executeUpdate();
             return 1;
         } catch (SQLException ex) {

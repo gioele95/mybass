@@ -41,15 +41,11 @@ public class InterfacciaApplicazionePesca extends Application {
     public static ParametriConfigurazioneXML xml;
     @Override
     public void start(Stage stage) {
-        
+        System.out.println("InterfacciaApplicazionePesca.start()");
         xml = new ParametriConfigurazioneXML();
         ClientEventiXML.inviaLog("Avvio Applicazione", xml.IPServerLog, xml.portaServerLog, xml.IPClient);
         colore="-fx-background-color: " + xml.coloreSfondo + ";";
         System.out.println("conf. "+xml.pathImmagine);
-        bottoneConfermaDati = new Button("Conferma Dati");
-        personalBest= new Label("Personal Best");
-        bestBag= new Label("Best Bag");
-        currentBag= new Label("Current Bag");
         graficoTecnicheCatturanti= new GraficoTecnicheCatturanti();
         //percentuale=new Label("");
         hbox = new HBox();
@@ -64,7 +60,7 @@ public class InterfacciaApplicazionePesca extends Application {
         stage.setOnCloseRequest((WindowEvent we)-> {cache=new CacheDatiCatture(tabella);
             ClientEventiXML.inviaLog("Chiusura Applicazione", xml.IPServerLog, xml.portaServerLog, xml.IPClient);});
         Group root = new Group(hbox);
-        Scene scene = new Scene(root,1160,650); // x y
+        Scene scene = new Scene(root,1160,560); // x y
   //      ((Group) scene.getRoot()).getChildren().add(graficoTecnicheCatturanti.getPercentuale());
         scene.getStylesheets().add("file:Styles/style.css");
         for (int i=0;i<xml.numeroMassimoPesci;i++){
@@ -99,6 +95,8 @@ public class InterfacciaApplicazionePesca extends Application {
         h3.setPadding(new Insets(0, 10, 30, 30));
         vb.getChildren().addAll(calendario.creaCalendario(gestoreMappaLago));
         tabella = new TabellaCatture(calendario.getData());
+               
+        
         h1.getChildren().addAll(personalBest,personal);
         h2.getChildren().addAll(bestBag,best);
         h3.getChildren().addAll(currentBag,current);
@@ -109,11 +107,11 @@ public class InterfacciaApplicazionePesca extends Application {
         VBox v = new VBox();
         v.setPadding(new Insets(20, 100, 100, 50));
         titolo = new Label("MYBASS");
-
-        //tabella.setFixedCellSize(5);
+        bottoneConfermaDati = new Button("Conferma Dati");
+        bottoneConfermaDati.setOnAction((ActionEvent ae)->{tabella.confermaDati();});
         titolo.setStyle("-fx-font-size: 30px;");
-        v.getChildren().addAll(titolo,tabella);
-    //   tabella.setMaxSize(700,176);
+        v.getChildren().addAll(titolo,tabella,bottoneConfermaDati);
+        tabella.setMaxSize(700,176);
         v.setAlignment(Pos.TOP_CENTER);
         v.setSpacing(100);
         gestoreMappaLago.caricaPosizioni(calendario.getData());

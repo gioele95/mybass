@@ -24,7 +24,7 @@ public class CaricatoreValidatoreXML {
     public boolean validaXML(String xml){
         Document d;
 	try{
-            System.out.println("validazione : "+ pathFileXSD);
+          //  System.out.println("validazione : "+ pathFileXSD);
             DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             if(xml.equals(""))                                                   //1)
@@ -46,7 +46,7 @@ public class CaricatoreValidatoreXML {
             System.out.println("non validato");
             return null;
         }
-        System.out.println("valido");
+       // System.out.println("valido");
         return  xs.fromXML(new File(pathFileXML));
     }
 }
