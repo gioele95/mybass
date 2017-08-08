@@ -49,6 +49,9 @@ public class CalendarioPescate {
                 return;
             }
             dataSelezionata= value;
+            System.out.println("pulisco cambioData()");
+            DepositoInformazioniCatture.getIstanza().listaCatture.clear();
+            
             DepositoInformazioniCatture.getIstanza().caricaCatture
                                     (String.valueOf(dataSelezionata));
             gestore.caricaPosizioni(String.valueOf(dataSelezionata));

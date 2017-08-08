@@ -1,5 +1,3 @@
-
-
 import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -132,23 +130,27 @@ public class DepositoInformazioniCatture {
         try ( Connection co = DriverManager.getConnection(URICon,utenteDB,passDB);
             PreparedStatement st = co.prepareStatement(queryCaricamentoCatture);
         ) { 
-            st.setString(1,d);
-            ResultSet rs = st.executeQuery();
-            Integer i;
-            i=0;
-            listaCatture.clear();
-            while (rs.next()) {
-               listaCatture.add(new DatiCattura( rs.getInt("codicecattura"),rs.getInt("cattura"),rs.getString("esca"), 
-               rs.getString("data"),rs.getString("tecnica"),rs.getString("peso"),
-               rs.getDouble("coordinataX"),rs.getDouble("coordinataY")));
-               i++;
-            }
-            int nmax=ParametriConfigurazioneXML.ottieniParametriConfigurazioneXML().numeroMassimoPesci;
-            if(i!=nmax)
-                while(i<nmax){
-                    listaCatture.add(new DatiCattura(-1,i+1,"","","","",0.0,0.0));
-                    i++;
+            if(listaCatture.isEmpty()){
+                st.setString(1,d);
+                ResultSet rs = st.executeQuery();
+                Integer i;
+                i=0;
+                System.out.println("pulisco caricaCatture()");
+                listaCatture.clear();
+                while (rs.next()) {
+                   listaCatture.add(new DatiCattura( rs.getInt("codicecattura"),rs.getInt("cattura"),rs.getString("esca"), 
+                   rs.getString("data"),rs.getString("tecnica"),rs.getString("peso"),
+                   rs.getDouble("coordinataX"),rs.getDouble("coordinataY")));
+                   i++;
                 }
+                int nmax=ParametriConfigurazioneXML.ottieniParametriConfigurazioneXML().numeroMassimoPesci;
+                if(i!=nmax)
+                    while(i<nmax){
+                        listaCatture.add(new DatiCattura(-1,i+1,"","","","",0.0,0.0));
+                        System.out.println("carica " +i);
+                        i++;
+                    }
+            }
             aggiornaDati(d);
         } catch (SQLException e) {System.err.println(e.getMessage());}     
 
@@ -164,17 +166,17 @@ public class DepositoInformazioniCatture {
             stCurrent.setDate(1,Date.valueOf(d));
             ResultSet rsCurrent = stCurrent.executeQuery();
             if(rsPersonal.next()){
-                InterfacciaApplicazionePesca.personal.setText(String.valueOf(rsPersonal.getInt("personal")));
+                InterfacciaApplicazionePesca.personal.setText(String.valueOf(rsPersonal.getDouble("personal")));
             }
             else{
                 InterfacciaApplicazionePesca.personal.setText("0");
             }
             if(rsBest.next())
-                InterfacciaApplicazionePesca.best.setText(String.valueOf(rsBest.getInt("bestbag")));
+                InterfacciaApplicazionePesca.best.setText(String.valueOf(rsBest.getDouble("bestbag")));
             else 
                 InterfacciaApplicazionePesca.best.setText("0");
             if(rsCurrent.next())
-                InterfacciaApplicazionePesca.current.setText(String.valueOf(rsCurrent.getInt("bag")));
+                InterfacciaApplicazionePesca.current.setText(String.valueOf(rsCurrent.getDouble("bag")));
             else 
                 InterfacciaApplicazionePesca.current.setText("0");
         } catch (SQLException e) {System.err.println(e.getMessage());}     
@@ -219,7 +221,7 @@ public class DepositoInformazioniCatture {
         l = FXCollections.observableArrayList();
         try ( Connection co = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybass","root","");   
             PreparedStatement st = co.prepareStatement(queryPercentuale);
-                ResultSet rs = st.executeQuery();
+            ResultSet rs = st.executeQuery();
         ) { 
             while(rs.next())
                 l.add(new PieChart.Data(rs.getString("tecnica"),rs.getDouble("totale")));

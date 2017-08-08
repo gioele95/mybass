@@ -74,7 +74,7 @@ public class InterfacciaApplicazionePesca extends Application {
         
         
         stage.show();
-        cache=new CacheDatiCatture(calendario);
+        cache=new CacheDatiCatture(calendario,gestoreMappaLago);
     }
     private VBox VBoxSinistra(){
         calendario=new CalendarioPescate();

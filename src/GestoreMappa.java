@@ -85,7 +85,7 @@ public class GestoreMappa {
                     System.out.println("elemento j "+ j);
                     DepositoInformazioniCatture.getIstanza().listaCatture.set(i, dc);
                 }else{
-                   // cattura[i].setVisible(false);
+                    cattura[i].setVisible(false);
                     Alert alert = new Alert(AlertType.WARNING);
                     alert.setTitle("ATTENZIONE");
                     alert.setContentText("non puoi inserire una posizione per una cattura inesistente");
@@ -103,12 +103,14 @@ public class GestoreMappa {
         DatiCattura dc;
         numeroSelezionato.setValue(1);
         for(int i=0;i<nmaxPesci;i++){ 
-            ObservableList<DatiCattura> ol =DepositoInformazioniCatture.getIstanza().listaCatture;
+            ObservableList<DatiCattura> ol =DepositoInformazioniCatture.getIstanza().listaCatture;           
             if(ol.isEmpty()){
                 System.out.println("attenzione observable list vuota");
                 return;
             }
             dc=ol.get(i);
+            if(dc.getCoordinataX()==0)
+                cattura[i].setVisible(false);
             System.out.println("voglio caricare");
             clickMappa(dc.getNumero()-1,dc.getCoordinataX(),dc.getCoordinataY(),true,d);
         }

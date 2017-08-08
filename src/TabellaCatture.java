@@ -115,7 +115,7 @@ public class TabellaCatture extends TableView<DatiCattura>{
         private void modificaCelle(CellEditEvent<DatiCattura, String> t,int sw){
             DatiCattura d= t.getRowValue();           
             int i;
-            if(d.getNumero()!=1 && !deposito.primaRigaDisponibile(CalendarioPescate.getData(),d.getNumero())){
+           /* if(d.getNumero()!=1 && !deposito.primaRigaDisponibile(CalendarioPescate.getData(),d.getNumero())){
                       JOptionPane.showMessageDialog(null, "Aggiungi le catture in ordine",
                               "ATTENZIONE", JOptionPane.WARNING_MESSAGE);
                     t.getTableView().getSelectionModel().clearSelection();
@@ -124,7 +124,7 @@ public class TabellaCatture extends TableView<DatiCattura>{
                     d.setTecnica("");
                     t.getTableView().getItems().set(d.getNumero(), d);
                     return;
-            }
+            }*/
             switch(sw){
                 case 0:
                     d.setEsca(t.getNewValue());
