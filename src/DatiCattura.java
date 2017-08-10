@@ -1,18 +1,9 @@
-
-
-
-import java.time.LocalDate;
 import javafx.beans.property.*;
-
-
-
 /**
  *
  * @author Gioele
  */
 public class DatiCattura {
-   // int codiceCattura;
-    //public Cattura cattura;
     public SimpleIntegerProperty codiceCattura;
     private SimpleIntegerProperty numero;
     private SimpleStringProperty peso;
@@ -21,16 +12,15 @@ public class DatiCattura {
     private SimpleStringProperty data;
     private SimpleDoubleProperty coordinataX;
     private SimpleDoubleProperty coordinataY;
-    public DatiCattura(Integer cc,Integer n,String e,String d,String t,String p,Double x,Double y) { //(1)
-        //cattura=new Cattura(n,p,t,e);
-        numero = new SimpleIntegerProperty(n); //
+    public DatiCattura(Integer cc,Integer n,String e,String d,String t,String p,Double x,Double y) {
+        numero = new SimpleIntegerProperty(n); 
         codiceCattura = new SimpleIntegerProperty(cc);
-        esca = new SimpleStringProperty(e); //
-        tecnica = new SimpleStringProperty(t);//
-        peso= new SimpleStringProperty(p);//
-        data = new SimpleStringProperty(d.toString());//
-        coordinataX = new SimpleDoubleProperty(x);//
-        coordinataY = new SimpleDoubleProperty(y);//
+        esca = new SimpleStringProperty(e); 
+        tecnica = new SimpleStringProperty(t);
+        peso= new SimpleStringProperty(p);
+        data = new SimpleStringProperty(d.toString());
+        coordinataX = new SimpleDoubleProperty(x);
+        coordinataY = new SimpleDoubleProperty(y);
     }    
     public DatiCattura() {
          this(-1,-1,"","","","",-1.0,-1.0);

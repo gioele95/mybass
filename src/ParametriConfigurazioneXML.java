@@ -1,18 +1,4 @@
 
-
-import com.thoughtworks.xstream.XStream;
-import java.io.File;
-import java.io.Serializable;
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
 public class ParametriConfigurazioneXML {
     public int numeroMassimoPesci;
     public  String coloreSfondo;
@@ -46,20 +32,17 @@ public class ParametriConfigurazioneXML {
     }
     
     
-     public static  boolean validaXML(){
+    /* public static  boolean validaXML(){
 	try{
             DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            
             Document d =  db.parse(new File("conf.xml")); 
-            
             Schema s= sf.newSchema(new StreamSource(new File("conf.xsd")));
-            
             s.newValidator().validate(new DOMSource(d));
             return true;
 	}catch(Exception ex){
                         System.out.println("exc"+ex);
 	    return false;
         }
-    }
+    }*/
 }

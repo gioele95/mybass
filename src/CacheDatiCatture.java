@@ -1,48 +1,35 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 /**
  *
  * @author Gioele
  */
-public class CacheDatiCatture implements Serializable{  
+public class CacheDatiCatture implements Serializable{  //1)
     private String cacheData;
     private List<DatiCatturaSemplici> cacheListaCatture;
     private class DatiCatturaSemplici implements Serializable{ //1)
-            private int codiceCattura;
-            private int numero;
+            private final int codiceCattura;
+            private final int numero;
             private String peso;
-            private String tecnica;
-            private String esca;
-            private String data;
-            private Double coordinataX;
-            private Double coordinataY;
+            private final String tecnica;
+            private final String esca;
+            private final String data;
+            private final Double coordinataX;
+            private final Double coordinataY;
             public DatiCatturaSemplici(DatiCattura d) { 
-                System.out.println("CacheDatiCatture.DatiCatturaSemplici.<init>()");
-                numero =d.getNumero(); //
-                
-
+                numero =d.getNumero(); 
                 codiceCattura = d.getCodiceCattura();
-                esca = d.getEsca(); //
-                tecnica = d.getTecnica();//
-                peso= d.getPeso();//
-                data = CalendarioPescate.getData();//
-               
-                coordinataX = d.getCoordinataX();//
-                coordinataY = d.getCoordinataY();//
-                
-               System.out.println("numero "+ numero + " cc "+codiceCattura +" e "+esca+ " t " + tecnica + "peso "+peso);
-
+                esca = d.getEsca();
+                tecnica = d.getTecnica();
+                peso= d.getPeso();
+                data = CalendarioPescate.getData();
+                coordinataX = d.getCoordinataX();
+                coordinataY = d.getCoordinataY();
             }  
-        }
-   /// boolean cacheValida;
-
-    
+    }
     public CacheDatiCatture(CalendarioPescate calendario, GestoreMappa mappa){
-        System.out.println("preleva");
         prelevaDatiCache(calendario,mappa);
     }
     public CacheDatiCatture(TabellaCatture tabella) {
@@ -50,9 +37,7 @@ public class CacheDatiCatture implements Serializable{
         cacheListaCatture= new ArrayList<>();
         ObservableList<DatiCattura> listaCatture = DepositoInformazioniCatture.getIstanza().listaCatture;
         for (DatiCattura dc : listaCatture) {
-            System.out.println("entro");
             DatiCatturaSemplici ds = new DatiCatturaSemplici(dc);
-            System.out.println("coordinata XXX.<init>() numero "+ds.coordinataX);
             cacheListaCatture.add(ds);
         }
         salvaDatiInCache();
@@ -77,16 +62,14 @@ public class CacheDatiCatture implements Serializable{
                         dc.peso="";
                     DepositoInformazioniCatture.getIstanza().listaCatture.add(new DatiCattura(dc.codiceCattura,dc.numero,
                         dc.esca,dc.data,dc.tecnica,dc.peso,dc.coordinataX,dc.coordinataY));
-                    if(dc.coordinataX!=0)
+                    if(dc.coordinataX!=0)                                   //2)
                         mappa.clickMappa(dc.numero-1,dc.coordinataX,dc.coordinataY,true,cacheData);
-                    System.out.println("CacheDatiCatture.prelevaDatiCache() peso  "+ dc.peso);
                 }
             }
-            System.out.println("peso "+  DepositoInformazioniCatture.getIstanza().listaCatture.get(0).getPeso());
-            System.out.println("esco da preleva cache");
         } catch(ClassNotFoundException | IOException  e) {
             System.out.println("Erore prelievo "+e.getMessage());
         }
     }
 }
 //1) per permettere la serializzazione della classe e l'inserimento su un file di tipo binario
+//2) significa che vi è una posizione valida per quella cattura

@@ -1,7 +1,6 @@
-
-
 import com.thoughtworks.xstream.*;
 import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.*;
@@ -10,10 +9,11 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.*;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class CaricatoreValidatoreXML {
     private String pathFileXML;
-    private String pathFileXSD;
+    private final String pathFileXSD;
     public CaricatoreValidatoreXML(String xsd,String xml){
         pathFileXSD=xsd;
         pathFileXML=xml;
@@ -24,7 +24,6 @@ public class CaricatoreValidatoreXML {
     public boolean validaXML(String xml){
         Document d;
 	try{
-          //  System.out.println("validazione : "+ pathFileXSD);
             DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             if(xml.equals(""))                                                   //1)
@@ -35,7 +34,7 @@ public class CaricatoreValidatoreXML {
             
             s.newValidator().validate(new DOMSource(d));
             return true;
-	}catch(Exception ex){
+	}catch(IOException | ParserConfigurationException | SAXException ex){
                         System.out.println("exc"+ex);
 	    return false;
         }
@@ -46,7 +45,6 @@ public class CaricatoreValidatoreXML {
             System.out.println("non validato");
             return null;
         }
-       // System.out.println("valido");
         return  xs.fromXML(new File(pathFileXML));
     }
 }

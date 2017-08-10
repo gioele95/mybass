@@ -38,18 +38,14 @@ public class InterfacciaApplicazionePesca extends Application {
     public static ParametriConfigurazioneXML xml;
     @Override
     public void start(Stage stage) {
-        System.out.println("InterfacciaApplicazionePesca.start()");
         xml = new ParametriConfigurazioneXML();
         ClientEventiXML.inviaLog("Avvio Applicazione", xml.IPServerLog, xml.portaServerLog, xml.IPClient);
         colore="-fx-background-color: " + xml.coloreSfondo + ";";
-        System.out.println("conf. "+xml.pathImmagine);
         graficoTecnicheCatturanti= new GraficoTecnicheCatturanti();
-        //percentuale=new Label("");
         hbox = new HBox();
         hbox.setStyle(colore);
         gestoreMappaLago=new GestoreMappa();
         vboxSinistra= VBoxSinistra();
-        //tabella=new TabellaCatture(calendario.dataSelezionata.toString());
         vboxDestra= VBoxDestra();
         vboxCentrale = VBoxCentrale();
         hbox.getChildren().addAll(vboxSinistra,vboxCentrale,vboxDestra);
@@ -58,13 +54,10 @@ public class InterfacciaApplicazionePesca extends Application {
             ClientEventiXML.inviaLog("Chiusura Applicazione", xml.IPServerLog, xml.portaServerLog, xml.IPClient);});
         Group root = new Group(hbox);
         Scene scene = new Scene(root,1125,600); // x y
-  //      ((Group) scene.getRoot()).getChildren().add(graficoTecnicheCatturanti.getPercentuale());
-
         scene.getStylesheets().add("style.css");
         for (int i=0;i<xml.numeroMassimoPesci;i++){
             ((Group) scene.getRoot()).getChildren().add(gestoreMappaLago.cattura[i]);
         }
-  //      clickMouseGrafico();
         clickMouseMappa();
         stage.setTitle("MyBass");
 

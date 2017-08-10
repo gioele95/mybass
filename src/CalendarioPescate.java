@@ -1,13 +1,9 @@
-
 import java.time.LocalDate;
 import javafx.geometry.HPos;
-import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javax.swing.JOptionPane;
-
 public class CalendarioPescate {
         private DatePicker calendario;   //1)
         private GridPane gridPane;
@@ -21,11 +17,11 @@ public class CalendarioPescate {
             calendario = new DatePicker(LocalDate.now());
             dataSelezionata=LocalDate.now();
             calendario.setOnAction((e) -> {cambioData(calendario.getValue());
-                                             ClientEventiXML.inviaLog("Cambio Data ", xml.IPServerLog, xml.portaServerLog, xml.IPClient);});
+                ClientEventiXML.inviaLog("Cambio Data ", xml.IPServerLog, xml.portaServerLog, xml.IPClient);});
             gridPane = new GridPane();
             gridPane.setHgap(10);
             gridPane.setVgap(10);
-            titolo= new Label("Data selezionata");
+            titolo = new Label("Data selezionata");
             titolo.setStyle("-fx-font-size: 20px;");
             gridPane.add(titolo, 0, 0);
             GridPane.setHalignment(titolo, HPos.LEFT);
@@ -43,18 +39,17 @@ public class CalendarioPescate {
             calendario.setValue(LocalDate.parse(d));
         }
         private void cambioData(LocalDate value) {
-            if(value.isAfter(LocalDate.now())){
-                JOptionPane.showMessageDialog(null, "Non puoi selezionare una "
-                    + "data futura", "ATTENZIONE", JOptionPane.WARNING_MESSAGE);
-                calendario.setValue(dataSelezionata);
+            if(value.isAfter(LocalDate.now())){                            //2)
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("ATTENZIONE");
+                alert.setContentText("non puoi scegliere una data futura");
+                alert.showAndWait();
+                setData(String.valueOf(dataSelezionata));
                 return;
             }
             dataSelezionata= value;
-            System.out.println("pulisco cambioData()");
             DepositoInformazioniCatture.getIstanza().listaCatture.clear();
-            
-            DepositoInformazioniCatture.getIstanza().caricaCatture
-                                    (String.valueOf(dataSelezionata));
+            DepositoInformazioniCatture.getIstanza().caricaCatture(String.valueOf(dataSelezionata));
             gestore.caricaPosizioni(String.valueOf(dataSelezionata));
         }
 }
@@ -62,4 +57,6 @@ public class CalendarioPescate {
 /*
 1) https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/DatePicker.html,
     https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/date-picker.htm
+2) risulta insensato scegliere una data futura
+
 */

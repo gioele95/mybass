@@ -56,43 +56,35 @@ public class GestoreMappa {
         hboxSelezione.getChildren().addAll(selezioneCattura,numeroSelezionato);
     }
     public void clickMappa(int i,double x, double y,boolean caricamento,String d){
-       // if(caricamento || DepositoInformazioniCatture.getIstanza().catturaEsistente(d,i+1)){
-            if (caricamento)
-                System.out.println("sto craicando!!!!!!!!!!!!x"+ x);
-            cattura[i].setTranslateX(x);
-            cattura[i].setTranslateY(y);
-            if(x!=0)
-                cattura[i].setVisible(true);
-            if(!caricamento){
-                DatiCattura dc = null;
-                int j;
-                for (j = 0; j < nmaxPesci; j++) {
-                    dc=DepositoInformazioniCatture.getIstanza().listaCatture.get(i);
-                    System.out.println("ciclo j" +j +"num "+dc.getNumero());
-                    if(dc.getData().equals("")){
-                        System.out.println("pesce non trovati "+ j+1);
-                        j=-1;
-                        break;
-                    }
-                    if(dc.getNumero()==i+1){
-                        System.out.println("esco dal for "+ dc.getNumero() +i+1);
-                        break;
-                    }
+        cattura[i].setTranslateX(x);
+        cattura[i].setTranslateY(y);
+        if(x!=0)
+            cattura[i].setVisible(true);
+        if(!caricamento){
+            DatiCattura dc = null;
+            int j;
+            for (j = 0; j < nmaxPesci; j++) {
+                dc=DepositoInformazioniCatture.getIstanza().listaCatture.get(i);
+                if(dc.getData().equals("")){
+                    j=-1;
+                    break;
                 }
-                if(j!=-1){
-                    dc.setCoordinataX(x);
-                    dc.setCoordinataY(y);
-                    System.out.println("elemento j "+ j);
-                    DepositoInformazioniCatture.getIstanza().listaCatture.set(i, dc);
-                }else{
-                    cattura[i].setVisible(false);
-                    Alert alert = new Alert(AlertType.WARNING);
-                    alert.setTitle("ATTENZIONE");
-                    alert.setContentText("non puoi inserire una posizione per una cattura inesistente");
-                    alert.showAndWait();
+                if(dc.getNumero()==i+1){
+                    break;
                 }
             }
-        //}
+            if(j!=-1){
+                dc.setCoordinataX(x);
+                dc.setCoordinataY(y);
+                DepositoInformazioniCatture.getIstanza().listaCatture.set(i, dc);
+            }else{
+                cattura[i].setVisible(false);
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setTitle("ATTENZIONE");
+                alert.setContentText("non puoi inserire una posizione per una cattura inesistente");
+                alert.showAndWait();
+            }
+        }
         ParametriConfigurazioneXML p= ParametriConfigurazioneXML.ottieniParametriConfigurazioneXML();
         if(!caricamento){
             System.out.println("mando log click");

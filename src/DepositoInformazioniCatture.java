@@ -10,7 +10,6 @@ public class DepositoInformazioniCatture {
     private final String utenteDB;
     private final String passDB;
     private final String URICon;
-
     public ObservableList<DatiCattura> listaCatture;
     private final String queryInserimentoCattura = "INSERT INTO tabellacatture(data,cattura,peso,tecnica,esca,"
             + "                                 coordinataX,coordinataY) VALUES(?,?,?,?,?,?,?) ";
@@ -46,7 +45,6 @@ public class DepositoInformazioniCatture {
         return new DatiCattura();
     }
     public boolean catturaEsistente(String d,int c){
-        System.out.println("cattura esistente"+c);
         try ( Connection co = DriverManager.getConnection(URICon,utenteDB,passDB);
             PreparedStatement st = co.prepareStatement(queryCatturaEsiste);
         ) {
@@ -58,13 +56,11 @@ public class DepositoInformazioniCatture {
                 return true;
             return false;
         } catch (SQLException ex) {
-            
             System.out.println("Errore di inserimento di una cattura "+ex);
         }      
         return false;
     }
     public boolean primaRigaDisponibile(String d,int c){
-        System.out.println("prima riga");
         try ( Connection co = DriverManager.getConnection(URICon,utenteDB,passDB);
             PreparedStatement st = co.prepareStatement(queryPrecedenti);
         ) {
@@ -101,11 +97,6 @@ public class DepositoInformazioniCatture {
             PreparedStatement st = co.prepareStatement(queryInserimentoCattura,Statement.RETURN_GENERATED_KEYS);
           
         ) {
-            System.out.println("inserisci cattura data"+dc.getData());
-            System.out.println("tecnica: "+dc.getTecnica());
-            System.out.println("esca "+dc.getEsca());
-            System.out.println("numero: "+dc.getNumero());
-            System.out.println("coordinatax "+dc.getCoordinataX() );
             st.setDate(1,Date.valueOf(dc.getData()));
             st.setInt(2, dc.getNumero());
             if(dc.getPeso().equals(""))
@@ -135,7 +126,6 @@ public class DepositoInformazioniCatture {
                 ResultSet rs = st.executeQuery();
                 Integer i;
                 i=0;
-                System.out.println("pulisco caricaCatture()");
                 listaCatture.clear();
                 while (rs.next()) {
                    String s= new String("");
@@ -150,7 +140,6 @@ public class DepositoInformazioniCatture {
                 if(i!=nmax)
                     while(i<nmax){
                         listaCatture.add(new DatiCattura(-1,i+1,"","","","",0.0,0.0));
-                        System.out.println("carica " +i);
                         i++;
                     }
             }
@@ -185,7 +174,6 @@ public class DepositoInformazioniCatture {
         } catch (SQLException e) {System.err.println(e.getMessage());}     
     }
     public int modificaCattura(DatiCattura dc){
-        System.out.println("modificaCattura");
         try ( Connection co = DriverManager.getConnection(URICon,utenteDB,passDB);
             PreparedStatement st = co.prepareStatement(queryModificaCattura);
         ) {
@@ -206,7 +194,6 @@ public class DepositoInformazioniCatture {
         }        
     }
      public void impostaCoordinate(double x, double y,String d,int c){
-        System.out.println("imposta coordinate");
         try ( Connection co = DriverManager.getConnection(URICon,utenteDB,passDB);
             PreparedStatement st = co.prepareStatement(queryCoordinate);
         ) {
