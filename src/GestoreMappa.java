@@ -103,7 +103,6 @@ public class GestoreMappa {
             dc=ol.get(i);
             if(dc.getCoordinataX()==0)
                 cattura[i].setVisible(false);
-            System.out.println("voglio caricare");
             clickMappa(dc.getNumero()-1,dc.getCoordinataX(),dc.getCoordinataY(),true,d);
         }
     }
