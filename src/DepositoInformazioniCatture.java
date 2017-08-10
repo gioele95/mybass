@@ -138,8 +138,11 @@ public class DepositoInformazioniCatture {
                 System.out.println("pulisco caricaCatture()");
                 listaCatture.clear();
                 while (rs.next()) {
+                   String s= new String("");
+                   if(rs.getDouble("peso")!=0.0)
+                        s=String.valueOf(rs.getDouble("peso"));
                    listaCatture.add(new DatiCattura( rs.getInt("codicecattura"),rs.getInt("cattura"),rs.getString("esca"), 
-                   rs.getString("data"),rs.getString("tecnica"),rs.getString("peso"),
+                   rs.getString("data"),rs.getString("tecnica"),s/*rs.getString("peso")*/,
                    rs.getDouble("coordinataX"),rs.getDouble("coordinataY")));
                    i++;
                 }

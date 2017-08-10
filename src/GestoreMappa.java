@@ -44,7 +44,7 @@ public class GestoreMappa {
         
         selezioneCattura= new Label ("Seleziona Cattura");
         ObservableList<Integer> opzioni= FXCollections.observableArrayList();
-        selezioneCattura.setStyle("-fx-font-size: 12px;");
+        selezioneCattura.setStyle("-fx-font-size: 20px;");
         for (int i=1;i<nmaxPesci+1;i++){
            opzioni.add(i);
         }

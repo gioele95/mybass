@@ -1,6 +1,3 @@
-
-
-
 import javafx.application.*;
 import javafx.event.*;
 import javafx.geometry.Insets;
@@ -60,9 +57,10 @@ public class InterfacciaApplicazionePesca extends Application {
         stage.setOnCloseRequest((WindowEvent we)-> {cache=new CacheDatiCatture(tabella);
             ClientEventiXML.inviaLog("Chiusura Applicazione", xml.IPServerLog, xml.portaServerLog, xml.IPClient);});
         Group root = new Group(hbox);
-        Scene scene = new Scene(root,1160,560); // x y
+        Scene scene = new Scene(root,1125,600); // x y
   //      ((Group) scene.getRoot()).getChildren().add(graficoTecnicheCatturanti.getPercentuale());
-        scene.getStylesheets().add("file:Styles/style.css");
+
+        scene.getStylesheets().add("style.css");
         for (int i=0;i<xml.numeroMassimoPesci;i++){
             ((Group) scene.getRoot()).getChildren().add(gestoreMappaLago.cattura[i]);
         }
@@ -79,20 +77,29 @@ public class InterfacciaApplicazionePesca extends Application {
     private VBox VBoxSinistra(){
         calendario=new CalendarioPescate();
         VBox vb= new VBox(30);
-        vb.setPadding(new Insets(30, 30, 30, 30));
+        vb.setPadding(new Insets(30, 15, 30, 30));
         personalBest = new Label("Personal Best[kg]");
         bestBag = new Label("Best Bag[kg]");
         currentBag = new Label("Current Bag[kg]");
+        bestBag.setStyle("-fx-font-size: 15px;");
+        currentBag.setStyle("-fx-font-size: 15px;");
+        personalBest.setStyle("-fx-font-size: 15px;");
+
         best=new Text("");
         personal=new Text("");
-        current=new Text("");   
+        current=new Text("");  
+        
+        best.setStyle("-fx-font-size: 15px;");
+        current.setStyle("-fx-font-size: 15px;");
+        personal.setStyle("-fx-font-size: 15px;");
+        
         vb.setAlignment(Pos.TOP_LEFT);
         HBox h1= new HBox(20);
-        HBox h2= new HBox(20);
-        HBox h3= new HBox(20);
-        h1.setPadding(new Insets(0, 30, 10, 30));
-        h2.setPadding(new Insets(0, 10, 10, 30));
-        h3.setPadding(new Insets(0, 10, 30, 30));
+        HBox h2= new HBox(50);
+        HBox h3= new HBox(25);
+        h1.setPadding(new Insets(40, 30, 10, 30));
+        h2.setPadding(new Insets(40, 10, 10, 30));
+        h3.setPadding(new Insets(40, 10, 30, 30));
         vb.getChildren().addAll(calendario.creaCalendario(gestoreMappaLago));
         tabella = new TabellaCatture(calendario.getData());
                
@@ -105,10 +112,17 @@ public class InterfacciaApplicazionePesca extends Application {
     }
     private VBox VBoxCentrale(){
         VBox v = new VBox();
-        v.setPadding(new Insets(20, 100, 100, 50));
+        v.setPadding(new Insets(30, 100, 100,10));
         titolo = new Label("MYBASS");
         bottoneConfermaDati = new Button("Conferma Dati");
         bottoneConfermaDati.setOnAction((ActionEvent ae)->{tabella.confermaDati();});
+        bottoneConfermaDati.setMinHeight(40);
+        //bottoneConfermaDati.setMaxWidth(80);
+        bottoneConfermaDati.setFont(Font.font("arial", FontWeight.BOLD, 30));
+        bottoneConfermaDati.setStyle("-fx-background-color: linear-gradient(#008CFF, #66B2FF), radial-gradient(center 50% -40%, radius 200%, #008CFF 45%, #66B2FF 50%); -fx-background-radius: 6, 5; "
+                + "-fx-background-insets: 0, 1; -fx-text-fill: white;-fx-font-weigth: bold");
+       // bottoneConfermaDati.setStyle(  "-fx-text-align: center;-fx-background-color: orange;-fx-height: 50px;"+
+         //       "-fx-width: 100px;-fx-border-radius: 5px;-fx-display: inline-block");
         titolo.setStyle("-fx-font-size: 30px;");
         v.getChildren().addAll(titolo,tabella,bottoneConfermaDati);
         tabella.setMaxSize(700,176);

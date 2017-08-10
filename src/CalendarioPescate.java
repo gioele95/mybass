@@ -26,6 +26,7 @@ public class CalendarioPescate {
             gridPane.setHgap(10);
             gridPane.setVgap(10);
             titolo= new Label("Data selezionata");
+            titolo.setStyle("-fx-font-size: 20px;");
             gridPane.add(titolo, 0, 0);
             GridPane.setHalignment(titolo, HPos.LEFT);
             gridPane.add(calendario, 0, 1);

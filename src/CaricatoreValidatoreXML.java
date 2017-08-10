@@ -1,6 +1,6 @@
 
 
-import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.*;
 import java.io.File;
 import java.io.StringReader;
 import javax.xml.XMLConstants;

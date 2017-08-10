@@ -15,6 +15,7 @@ public class GraficoTecnicheCatturanti {
             aggiornaGrafico();
 
             grafico.setTitle("Tecniche Catturanti");
+           // grafico.setStyle("-fx-font: arial;-fx-text-decoration-color: orange");
             grafico.setLabelsVisible(true);
            
     }
