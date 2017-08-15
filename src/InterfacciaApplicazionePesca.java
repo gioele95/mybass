@@ -22,9 +22,7 @@ public class InterfacciaApplicazionePesca extends Application {
     private VBox vboxCentrale;      //1)
     private VBox vboxSinistra;
     private VBox vboxDestra;
-    private HBox hbox;
-    
-    
+    private HBox hbox;  
     public static  Text personal;
     public static Text current;
     public static Text best;
@@ -53,7 +51,7 @@ public class InterfacciaApplicazionePesca extends Application {
         stage.setOnCloseRequest((WindowEvent we)-> {cache=new CacheDatiCatture(tabella);
             ClientEventiXML.inviaLog("Chiusura Applicazione", xml.IPServerLog, xml.portaServerLog, xml.IPClient);});
         Group root = new Group(hbox);
-        Scene scene = new Scene(root,1125,600); // x y
+        Scene scene = new Scene(root,1043,590); // x y
         scene.getStylesheets().add("style.css");
         for (int i=0;i<xml.numeroMassimoPesci;i++){
             ((Group) scene.getRoot()).getChildren().add(gestoreMappaLago.cattura[i]);
@@ -62,8 +60,6 @@ public class InterfacciaApplicazionePesca extends Application {
         stage.setTitle("MyBass");
 
         stage.setScene(scene);
-        
-        
         stage.show();
         cache=new CacheDatiCatture(calendario,gestoreMappaLago);
     }
@@ -105,29 +101,28 @@ public class InterfacciaApplicazionePesca extends Application {
     }
     private VBox VBoxCentrale(){
         VBox v = new VBox();
-        v.setPadding(new Insets(30, 100, 100,10));
+        v.setPadding(new Insets(30, 0, 100,10));
         titolo = new Label("MYBASS");
         bottoneConfermaDati = new Button("Conferma Dati");
         bottoneConfermaDati.setOnAction((ActionEvent ae)->{tabella.confermaDati();});
         bottoneConfermaDati.setMinHeight(40);
-        //bottoneConfermaDati.setMaxWidth(80);
-        bottoneConfermaDati.setFont(Font.font("arial", FontWeight.BOLD, 30));
+        bottoneConfermaDati.setFont(Font.font("arial", FontWeight.BOLD, 22));
         bottoneConfermaDati.setStyle("-fx-background-color: linear-gradient(#008CFF, #66B2FF), radial-gradient(center 50% -40%, radius 200%, #008CFF 45%, #66B2FF 50%); -fx-background-radius: 6, 5; "
                 + "-fx-background-insets: 0, 1; -fx-text-fill: white;-fx-font-weigth: bold");
-       // bottoneConfermaDati.setStyle(  "-fx-text-align: center;-fx-background-color: orange;-fx-height: 50px;"+
-         //       "-fx-width: 100px;-fx-border-radius: 5px;-fx-display: inline-block");
+        tabella.setFixedCellSize(40);
+        tabella.setStyle("-fx-font-size: 15px;");
         titolo.setStyle("-fx-font-size: 30px;");
         v.getChildren().addAll(titolo,tabella,bottoneConfermaDati);
-        tabella.setMaxSize(700,176);
+        tabella.setMaxSize(700,232);
         v.setAlignment(Pos.TOP_CENTER);
-        v.setSpacing(100);
+        v.setSpacing(70);
         gestoreMappaLago.caricaPosizioni(calendario.getData());
         return v; 
     }
     private VBox VBoxDestra(){
         graficoTecnicheCatturanti=new GraficoTecnicheCatturanti();
         VBox vb=new VBox();
-        vb.setPadding(new Insets(10, 10, 10, 10));
+        vb.setPadding(new Insets(10, 0, 10, 10));
         vb.setPrefWidth(80);
         vb.setPrefHeight(80);
         vb.getChildren().addAll(gestoreMappaLago.vb,GraficoTecnicheCatturanti.getGrafico());
@@ -147,9 +142,3 @@ public class InterfacciaApplicazionePesca extends Application {
     
 }
 //1)http://docs.oracle.com/javafx/2/layout/builtin_layouts.htm
-                /* vb.setStyle("-fx-padding: 10;" + 
-                      "-fx-border-style: solid inside;" + 
-                      "-fx-border-width: 2;" +
-                      "-fx-border-insets: 5;" + 
-                      "-fx-border-radius: 5;" + 
-                      "-fx-border-color: blue;");/*/

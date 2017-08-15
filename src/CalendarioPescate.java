@@ -12,12 +12,10 @@ public class CalendarioPescate {
         private TabellaCatture tabella;
         private GestoreMappa gestore;
         public GridPane creaCalendario(GestoreMappa g){
-            ParametriConfigurazioneXML xml = new ParametriConfigurazioneXML();
             gestore=g;
             calendario = new DatePicker(LocalDate.now());
             dataSelezionata=LocalDate.now();
-            calendario.setOnAction((e) -> {cambioData(calendario.getValue());
-                ClientEventiXML.inviaLog("Cambio Data ", xml.IPServerLog, xml.portaServerLog, xml.IPClient);});
+            calendario.setOnAction((e) -> {System.out.println("CalendarioPescate.creaCalendario()");cambioData(calendario.getValue(),true);});
             gridPane = new GridPane();
             gridPane.setHgap(10);
             gridPane.setVgap(10);
@@ -35,10 +33,10 @@ public class CalendarioPescate {
             return String.valueOf(dataSelezionata);
         }
         public void setData(String d){
-            cambioData(LocalDate.parse(d));
+            cambioData(LocalDate.parse(d),false);
             calendario.setValue(LocalDate.parse(d));
         }
-        private void cambioData(LocalDate value) {
+        private void cambioData(LocalDate value, boolean mandaLog) {
             if(value.isAfter(LocalDate.now())){                            //2)
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("ATTENZIONE");
@@ -50,7 +48,13 @@ public class CalendarioPescate {
             dataSelezionata= value;
             DepositoInformazioniCatture.getIstanza().listaCatture.clear();
             DepositoInformazioniCatture.getIstanza().caricaCatture(String.valueOf(dataSelezionata));
+            if(mandaLog){
+                ParametriConfigurazioneXML xml = new ParametriConfigurazioneXML();    
+                ClientEventiXML.inviaLog("Cambio Data", xml.IPServerLog, xml.portaServerLog, xml.IPClient);
+            }
+            
             gestore.caricaPosizioni(String.valueOf(dataSelezionata));
+        
         }
 }
 

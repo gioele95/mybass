@@ -41,8 +41,10 @@ public class TabellaCatture extends TableView<DatiCattura>{
             inizializzaEventi();      
             colonnaCattura.setPrefWidth(60);
             colonnaEsca.setPrefWidth(150);
-            colonnaPeso.setPrefWidth(60);
+            colonnaPeso.setPrefWidth(70);
             colonnaTecnica.setPrefWidth(100);
+            //.table-row{line-height: 50px;}
+
         }
         private void assegnaTecnichePossibili() {
             tecnichePossibili = FXCollections.observableArrayList();
