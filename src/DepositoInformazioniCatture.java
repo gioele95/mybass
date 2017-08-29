@@ -177,8 +177,6 @@ public class DepositoInformazioniCatture {
         try ( Connection co = DriverManager.getConnection(URICon,utenteDB,passDB);
             PreparedStatement st = co.prepareStatement(queryModificaCattura);
         ) {
-            System.out.println("MODUIFICAAAAAAAAA numero: "+dc.getNumero());
-            System.out.println("coordinatax "+dc.getCoordinataX() );
             st.setInt(6,dc.getCodiceCattura());
             st.setString(1,dc.getPeso());
             st.setString(2, dc.getTecnica());
@@ -188,8 +186,7 @@ public class DepositoInformazioniCatture {
             st.executeUpdate();
             return 1;
         } catch (SQLException ex) {
-            
-            System.out.println("Errore di inserimento di una cattura "+ex);
+            //System.out.println("Errore di inserimento di una cattura "+ex);
             return -1;
         }        
     }

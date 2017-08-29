@@ -29,7 +29,7 @@ public class CacheDatiCatture implements Serializable{  //1)
                 coordinataY = d.getCoordinataY();
             }  
     }
-    public CacheDatiCatture(CalendarioPescate calendario, GestoreMappa mappa){
+    public CacheDatiCatture(CalendarioPescate calendario, SpotCatture mappa){
         prelevaDatiCache(calendario,mappa);
     }
     public CacheDatiCatture(TabellaCatture tabella) {
@@ -49,7 +49,7 @@ public class CacheDatiCatture implements Serializable{  //1)
             System.out.println("Erore "+e.getMessage());
         } 
     }
-    private void prelevaDatiCache(CalendarioPescate calendario,GestoreMappa mappa){
+    private void prelevaDatiCache(CalendarioPescate calendario,SpotCatture mappa){
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./cache/cache.bin"))) {
             CacheDatiCatture obj = (CacheDatiCatture)ois.readObject();
             cacheData = obj.cacheData;

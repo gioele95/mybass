@@ -10,12 +10,12 @@ public class CalendarioPescate {
         private Label titolo;
         private static LocalDate dataSelezionata;
         private TabellaCatture tabella;
-        private GestoreMappa gestore;
-        public GridPane creaCalendario(GestoreMappa g){
+        private SpotCatture gestore;
+        public GridPane creaCalendario(SpotCatture g){
             gestore=g;
             calendario = new DatePicker(LocalDate.now());
             dataSelezionata=LocalDate.now();
-            calendario.setOnAction((e) -> {System.out.println("CalendarioPescate.creaCalendario()");cambioData(calendario.getValue(),true);});
+            calendario.setOnAction((e) -> {cambioData(calendario.getValue(),true);});
             gridPane = new GridPane();
             gridPane.setHgap(10);
             gridPane.setVgap(10);
@@ -50,7 +50,7 @@ public class CalendarioPescate {
             DepositoInformazioniCatture.getIstanza().caricaCatture(String.valueOf(dataSelezionata));
             if(mandaLog){
                 ParametriConfigurazioneXML xml = new ParametriConfigurazioneXML();    
-                ClientEventiXML.inviaLog("Cambio Data", xml.IPServerLog, xml.portaServerLog, xml.IPClient);
+                ClientLogEventiXML.inviaLog("Cambio Data", xml.IPServerLog, xml.portaServerLog, xml.IPClient);
             }
             
             gestore.caricaPosizioni(String.valueOf(dataSelezionata));

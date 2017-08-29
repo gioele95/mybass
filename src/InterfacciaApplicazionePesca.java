@@ -30,29 +30,28 @@ public class InterfacciaApplicazionePesca extends Application {
     
     private String colore;
     private CalendarioPescate calendario;
-    private GestoreMappa gestoreMappaLago;
+    private SpotCatture gestoreMappaLago;
     private TabellaCatture tabella; 
     private CacheDatiCatture cache;
     public static ParametriConfigurazioneXML xml;
     @Override
     public void start(Stage stage) {
         xml = new ParametriConfigurazioneXML();
-        ClientEventiXML.inviaLog("Avvio Applicazione", xml.IPServerLog, xml.portaServerLog, xml.IPClient);
+        ClientLogEventiXML.inviaLog("Avvio Applicazione", xml.IPServerLog, xml.portaServerLog, xml.IPClient);
         colore="-fx-background-color: " + xml.coloreSfondo + ";";
         graficoTecnicheCatturanti= new GraficoTecnicheCatturanti();
         hbox = new HBox();
         hbox.setStyle(colore);
-        gestoreMappaLago=new GestoreMappa();
+        gestoreMappaLago=new SpotCatture();
         vboxSinistra= VBoxSinistra();
         vboxDestra= VBoxDestra();
         vboxCentrale = VBoxCentrale();
         hbox.getChildren().addAll(vboxSinistra,vboxCentrale,vboxDestra);
         hbox.setSpacing(40);
         stage.setOnCloseRequest((WindowEvent we)-> {cache=new CacheDatiCatture(tabella);
-            ClientEventiXML.inviaLog("Chiusura Applicazione", xml.IPServerLog, xml.portaServerLog, xml.IPClient);});
+            ClientLogEventiXML.inviaLog("Chiusura Applicazione", xml.IPServerLog, xml.portaServerLog, xml.IPClient);});
         Group root = new Group(hbox);
         Scene scene = new Scene(root,1043,590); // x y
-        scene.getStylesheets().add("style.css");
         for (int i=0;i<xml.numeroMassimoPesci;i++){
             ((Group) scene.getRoot()).getChildren().add(gestoreMappaLago.cattura[i]);
         }

@@ -1,4 +1,5 @@
 import java.io.DataInputStream;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -19,7 +20,7 @@ public class ServerDiLog {
             if(!Files.exists(Paths.get("C:/prg/myapps/MyBass/log/log.xml")))
                 Files.createFile(Paths.get("C:/prg/myapps/MyBass/log/log.xml"));
             Files.write(Paths.get("C:/prg/myapps/MyBass/log/log.xml"),xml.getBytes(),StandardOpenOption.APPEND); 
-        } catch(Exception e) {
+        } catch(IOException e) {
             System.out.println("Impossibile scrivere su file di log: "+e.getMessage());
         }
     }
